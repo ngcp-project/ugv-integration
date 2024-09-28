@@ -13,6 +13,7 @@ freecode camp has a bunch of tutorials on C and C++
 **Nvidia Jetson SBCs** 
 
 **RTI Connext**
+
 Introduction to RTI connext: https://www.rti.com/gettingstarted
 
 Intro to RTI connext: https://www.youtube.com/@farouqAliyu
