@@ -19,7 +19,6 @@ while 1:
     print(f"(lin_vel, steering_angle): ({lin_vel}, {steering_angle})")
     
 
-
     #events = get_gamepad()
     #print(f"({events[0].code}), ({events[0].state})")
     #for event in events:V
