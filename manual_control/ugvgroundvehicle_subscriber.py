@@ -36,7 +36,7 @@ class ugvgroundvehicleSubscriber:
         participant = dds.DomainParticipant(domain_id)
 
         # A Topic has a name and a datatype.
-        topic = dds.Topic(participant, "Example ugvgroundvehicle", ugvgroundvehicle)
+        topic = dds.Topic(participant, "ugvgroundvehicle", ugvgroundvehicle)
 
         # This DataReader reads data on Topic "Example ugvgroundvehicle".
         # DataReader QoS is configured in USER_QOS_PROFILES.xml

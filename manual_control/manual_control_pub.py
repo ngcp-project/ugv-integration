@@ -16,6 +16,7 @@ from ugvgroundvehicle import ugvgroundvehicle
 from inputs import get_gamepad
 
 
+SCALE_FACTOR = -327
 MAX_JOY_VAL = 2**15 # max input of 32,768
 #velocity = 0 # linear velocity Y
 #angle = 0 # steering angle X
@@ -29,39 +30,27 @@ class ugvgroundvehiclePublisher:
         participant = dds.DomainParticipant(domain_id)
 
         # A Topic has a name and a datatype.
-        topic = dds.Topic(participant, "Example ugvgroundvehicle", ugvgroundvehicle)
+        topic = dds.Topic(participant, "ugvgroundvehicle", ugvgroundvehicle)
 
         # This DataWriter will write data on Topic "Example ugvgroundvehicle"
         # DataWriter QoS is configured in USER_QOS_PROFILES.xml
         writer = dds.DataWriter(participant.implicit_publisher, topic)
         ugv_manual = ugvgroundvehicle()
 
-        ugv_manual.SteeringAngle = 0
-        ugv_manual.velocity = 0
-        
         for count in range(sample_count):
         # Start of new code
             try:
                 event1 = get_gamepad()
                 if event1[0].code == 'ABS_Y':
-                    # handling sensitiviy during idle input
-                    # if input not within dead range, assign to velocity. else keep at 0
-                    if -1500 <= event1[0].state or event1[0].state <=  1500:
-                        event1[0].state = 0 
-                        ugv_manual.velocity = 0
-                    ugv_manual.velocity = event1[0].state #/ MAX_JOY_VAL
+                    ugv_manual.velocity = event1[0].state//SCALE_FACTOR #/ MAX_JOY_VAL
 
                 event2 = get_gamepad()
                 if event2[0].code == 'ABS_X':
-                    if -5000 <= event2[0].state or event2[0].state <= 5000:
-                        event2[0].state = 0
-                        ugv_manual.SteeringAngle = 0
-                    ugv_manual.SteeringAngle = event2[0].state #/ MAX_JOY_VAL
-                    
+                    ugv_manual.SteeringAngle = event2[0].state//SCALE_FACTOR  #/ MAX_JOY_VAL
                 
                 print(f"Linear Velocity: {ugv_manual.velocity}, Steering Angle: {ugv_manual.SteeringAngle}")
                 writer.write(ugv_manual)
-                time.sleep(0.02)
+                #time.sleep(0.02)
             
             except KeyboardInterrupt:
                 break			
