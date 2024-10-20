@@ -14,6 +14,7 @@ import sys
 import rti.connextdds as dds
 from ugvgroundvehicle import ugvgroundvehicle
 
+import socket
 class ugvgroundvehicleSubscriber:
 
     @staticmethod
@@ -41,7 +42,16 @@ class ugvgroundvehicleSubscriber:
         # This DataReader reads data on Topic "Example ugvgroundvehicle".
         # DataReader QoS is configured in USER_QOS_PROFILES.xml
         reader = dds.DataReader(participant.implicit_subscriber, topic)
+        # Set up the UDP server
+        server_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
+        # Bind the server to an IP and port (localhost and port 12345 in this case)
+        server_address = ('192.168.20.5', 12345)  # Replace with your server's IP
+        server_socket.bind(server_address)
+
+        # Define the known client IP and port
+        client_ip = '192.168.20.21'
+        client_port = 8   
         # Initialize samples_read to zero
         samples_read = 0
 
@@ -51,8 +61,14 @@ class ugvgroundvehicleSubscriber:
         def condition_handler(_):
             nonlocal samples_read
             nonlocal reader
+            samples = reader.take_data()
+            print(f"(linear velocity, steering angle): ({samples[0].velocity}, {samples[0].SteeringAngle})")
+            #udp_payload = f"(linear velocity, steering angle): ({samples[0].velocity}, {samples[0].SteeringAngle})".encode()
+            udp_payload = f"{samples[0].velocity}, {samples[0].SteeringAngle}".encode()
+            server_socket.sendto(udp_payload, (client_ip, client_port))
+            time.sleep(.1)
             samples_read += ugvgroundvehicleSubscriber.process_data(reader)
-
+            
         # Obtain the DataReader's Status Condition
         status_condition = dds.StatusCondition(reader)
 
@@ -69,14 +85,14 @@ class ugvgroundvehicleSubscriber:
             try:
                 # Dispatch will call the handlers associated to the WaitSet conditions
                 # when they activate
-                print("Hello World subscriber sleeping for 1 seconds...")
+                #print("ugvgroundvehcile subscriber sleeping...")
 
-                waitset.dispatch(dds.Duration(1))  # Wait up to 1s each time
+                waitset.dispatch(dds.Duration(.2))  # Wait up to 1s each time
             except KeyboardInterrupt:
                 break
 
         print("preparing to shut down...")
-
+        server_socket.close()
 
 if __name__ == "__main__":
     ugvgroundvehicleSubscriber.run_subscriber(
