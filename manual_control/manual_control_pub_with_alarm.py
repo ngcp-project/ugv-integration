@@ -14,12 +14,13 @@ import sys
 import rti.connextdds as dds
 from ugvgroundvehicle import ugvgroundvehicle
 from inputs import get_gamepad
-
+import signal
 
 SCALE_FACTOR = -327
 MAX_JOY_VAL = 2**15 # max input of 32,768
 #velocity = 0 # linear velocity Y
 #angle = 0 # steering angle X
+
 
 class ugvgroundvehiclePublisher:
     @staticmethod
@@ -37,26 +38,49 @@ class ugvgroundvehiclePublisher:
         writer = dds.DataWriter(participant.implicit_publisher, topic)
         ugv_manual = ugvgroundvehicle()
 
+        def timeout_handler(signum, frame):             #on alarm, writes velo and steering angle to publisher
+            ugv_manual.velocity = cmdvelo
+            ugv_manual.SteeringAngle = cmdangle
+            print(f"Linear Velocity: {ugv_manual.velocity}, Steering Angle: {ugv_manual.SteeringAngle}")
+            writer.write(ugv_manual)
+            signal.setitimer(signal.ITIMER_REAL, 0.02)
+            #raise Exception                             #triggers exception in the try block
+
+        cmdvelo = 0
+        cmdangle = 0
+
+        signal.signal(signal.SIGALRM, timeout_handler)  #Routes alarm to timeout handler
+
+        signal.setitimer(signal.ITIMER_REAL, 0.02)      #timer delay in seconds, float
+
+
         for count in range(sample_count):
         # Start of new code
             try:
-                event1 = get_gamepad()
-                if event1[0].code == 'ABS_Y':
-                    ugv_manual.velocity = event1[0].state//SCALE_FACTOR #/ MAX_JOY_VAL
+                #try:
+                    event1 = get_gamepad()              #reads gamepad value, hangs when no inputs
+                    if event1[0].code == 'ABS_Y':
+                        cmdvelo = event1[0].state//SCALE_FACTOR #/ MAX_JOY_VAL
+                        if -15 <= cmdvelo and cmdvelo <= 15:            #deadzone
+                            cmdvelo = 0
+                    if event1[0].code == 'ABS_X':
+                        cmdangle = event1[0].state//SCALE_FACTOR  #/ MAX_JOY_VAL
+                        if -15 <= cmdangle and cmdangle <= 15:           #deadzone
+                            cmdangle = 0
 
-                event2 = get_gamepad()
-                if event2[0].code == 'ABS_X':
-                    ugv_manual.SteeringAngle = event2[0].state//SCALE_FACTOR  #/ MAX_JOY_VAL
+                                            #If adding buttons, store button state
+
+                #except Exception:
+                #    signal.setitimer(signal.ITIMER_REAL, 0.02) #resets timer after handler raises Exception
                 
-                print(f"Linear Velocity: {ugv_manual.velocity}, Steering Angle: {ugv_manual.SteeringAngle}")
-                writer.write(ugv_manual)
-                #time.sleep(0.02)
-            
             except KeyboardInterrupt:
                 break			
         print("Preparing to shut down...")
-	
+
+
 if __name__ == "__main__":
     ugvgroundvehiclePublisher.run_publisher(
             domain_id=0,
             sample_count=sys.maxsize)
+
+
