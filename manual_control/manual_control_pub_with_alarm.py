@@ -16,7 +16,7 @@ from ugvgroundvehicle import ugvgroundvehicle
 from inputs import get_gamepad
 import signal
 
-SCALE_FACTOR = -327
+SCALE_FACTOR = -32700
 MAX_JOY_VAL = 2**15 # max input of 32,768
 #velocity = 0 # linear velocity Y
 #angle = 0 # steering angle X
@@ -60,13 +60,12 @@ class ugvgroundvehiclePublisher:
                 #try:
                     event1 = get_gamepad()              #reads gamepad value, hangs when no inputs
                     if event1[0].code == 'ABS_Y':
-                        cmdvelo = event1[0].state//SCALE_FACTOR #/ MAX_JOY_VAL
-                        if -15 <= cmdvelo and cmdvelo <= 15:            #deadzone
+                        cmdvelo = event1[0].state/(-MAX_JOY_VAL)
+                        if -15/100 <= cmdvelo and cmdvelo <= 15/100:            #deadzone
                             cmdvelo = 0
-                    #if event1[0].code == 'ABS_X':
                     if event1[0].code == 'ABS_RX':
-                        cmdangle = event1[0].state//SCALE_FACTOR  #/ MAX_JOY_VAL
-                        if -15 <= cmdangle and cmdangle <= 15:           #deadzone
+                        cmdangle = event1[0].state/(-MAX_JOY_VAL)
+                        if -15/100 <= cmdangle and cmdangle <= 15/100:           #deadzone
                             cmdangle = 0
 
                                             #If adding buttons, store button state
