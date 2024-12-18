@@ -63,7 +63,8 @@ class ugvgroundvehiclePublisher:
                         cmdvelo = event1[0].state//SCALE_FACTOR #/ MAX_JOY_VAL
                         if -15 <= cmdvelo and cmdvelo <= 15:            #deadzone
                             cmdvelo = 0
-                    if event1[0].code == 'ABS_X':
+                    #if event1[0].code == 'ABS_X':
+                    if event1[0].code == 'ABS_RX':
                         cmdangle = event1[0].state//SCALE_FACTOR  #/ MAX_JOY_VAL
                         if -15 <= cmdangle and cmdangle <= 15:           #deadzone
                             cmdangle = 0
