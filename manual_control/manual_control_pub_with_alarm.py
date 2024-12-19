@@ -67,6 +67,8 @@ class ugvgroundvehiclePublisher:
                         cmdangle = event1[0].state/(-MAX_JOY_VAL)
                         if -15/100 <= cmdangle and cmdangle <= 15/100:           #deadzone
                             cmdangle = 0
+                        if cmdangle > 1.0:  # Dont want 1.08 or something like this
+                            cmdangle = 1.0
 
                                             #If adding buttons, store button state
 
