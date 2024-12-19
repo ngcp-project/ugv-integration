@@ -69,7 +69,7 @@ class ugvgroundvehicleSubscriber:
             udp_payload = f"{samples[0].velocity}, {samples[0].SteeringAngle}".encode()
             server_socket.sendto(udp_payload, (client_ip, client_port))
             
-            #time.sleep(.1)
+            time.sleep(.010) #10ms
             samples_read += ugvgroundvehicleSubscriber.process_data(reader)
             
         # Obtain the DataReader's Status Condition
