@@ -43,7 +43,7 @@ class ugvgroundvehiclePublisher:
             ugv_manual.SteeringAngle = cmdangle
             print(f"Linear Velocity: {ugv_manual.velocity}, Steering Angle: {ugv_manual.SteeringAngle}")
             writer.write(ugv_manual)
-            signal.setitimer(signal.ITIMER_REAL, 0.02)
+            signal.setitimer(signal.ITIMER_REAL, 0.002) # Decreased from 20ms to 2ms (Chris)
             #raise Exception                             #triggers exception in the try block
 
         cmdvelo = 0
@@ -51,7 +51,7 @@ class ugvgroundvehiclePublisher:
 
         signal.signal(signal.SIGALRM, timeout_handler)  #Routes alarm to timeout handler
 
-        signal.setitimer(signal.ITIMER_REAL, 0.02)      #timer delay in seconds, float
+        signal.setitimer(signal.ITIMER_REAL, 0.002)      #timer delay in seconds, float
 
 
         for count in range(sample_count):

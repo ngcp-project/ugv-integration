@@ -52,8 +52,19 @@ class ugvgroundvehicleSubscriber:
         # Define the known client IP and port
         client_ip = '192.168.20.21'
         client_port = 8   
+
+        # Create Socket for Xsens 
+        xsens_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+
+        # Another udp server and client to receive Xsens Data 
+        xsens_client_address = ("localhost", 44444)
+        xsens_socket.bind(xsens_client_address)
+
         # Initialize samples_read to zero
         samples_read = 0
+
+        goal_heading = 0.0
+        actual_heading = 40
 
         # Associate a handler with the status condition. This will run when the
         # condition is triggered, in the context of the dispatch call (see below)
@@ -62,11 +73,20 @@ class ugvgroundvehicleSubscriber:
             nonlocal samples_read
             nonlocal reader
             samples = reader.take_data()
-            print(f"(linear velocity, steering angle): ({samples[0].velocity}, {samples[0].SteeringAngle})")
+
+            heading_error = goal_heading - actual_heading #Error between goal heading and actual heading. These values will be determine via gps and imu respectively
+            heading_error = heading_error / 100.0   # Make it a value between [-1, 1] This is assuming -100 <= heading_error <= 100 
+
+            data, sender_address = xsens_socket.recvfrom(10)
+            print(f"Error: {data}")
+            #print(f"(velocity, angle, head error): ({samples[0].velocity}, {samples[0].SteeringAngle}, {heading_error})")
             #udp_payload = f"(linear velocity, steering angle): ({samples[0].velocity}, {samples[0].SteeringAngle})".encode()
 
-            # Type cast velocity and steering angle as ints 
-            udp_payload = f"{samples[0].velocity}, {samples[0].SteeringAngle}".encode()
+
+
+
+
+            udp_payload = f"{samples[0].velocity}, {samples[0].SteeringAngle}, {heading_error}".encode()
             server_socket.sendto(udp_payload, (client_ip, client_port))
             
             time.sleep(.010) #10ms
