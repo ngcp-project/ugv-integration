@@ -63,9 +63,6 @@ class ugvgroundvehicleSubscriber:
         # Initialize samples_read to zero
         samples_read = 0
 
-        goal_heading = 0.0
-        actual_heading = 40
-
         # Associate a handler with the status condition. This will run when the
         # condition is triggered, in the context of the dispatch call (see below)
         # condition argument is not used
@@ -74,18 +71,10 @@ class ugvgroundvehicleSubscriber:
             nonlocal reader
             samples = reader.take_data()
 
-            heading_error = goal_heading - actual_heading #Error between goal heading and actual heading. These values will be determine via gps and imu respectively
-            heading_error = heading_error / 100.0   # Make it a value between [-1, 1] This is assuming -100 <= heading_error <= 100 
-
-            data, sender_address = xsens_socket.recvfrom(10)
-            print(f"Error: {data}")
-            #print(f"(velocity, angle, head error): ({samples[0].velocity}, {samples[0].SteeringAngle}, {heading_error})")
-            #udp_payload = f"(linear velocity, steering angle): ({samples[0].velocity}, {samples[0].SteeringAngle})".encode()
-
-
-
-
-
+            heading_error, sender_address = xsens_socket.recvfrom(10)
+            heading_error = float(heading_error.decode())
+            heading_error = heading_error/100  #Scale down to a value that the nucalo can accept 
+            print(f"(velocity, angle, head error): ({samples[0].velocity}, {samples[0].SteeringAngle}, {heading_error})")
             udp_payload = f"{samples[0].velocity}, {samples[0].SteeringAngle}, {heading_error}".encode()
             server_socket.sendto(udp_payload, (client_ip, client_port))
             
