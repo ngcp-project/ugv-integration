@@ -28,12 +28,12 @@ class Ugv_Xsens(Node):
         self.euler_data_lock = 0
 
     def gps_callback(self, gps_msg):
-        gps_data = f"Lat:{gps_msg.vector.x}, Lon:{gps_msg.vector.y}"
-        self.client_socket.sendto(gps_data.encode(), self.server_address)
-        print(gps_data)
-        
-        # Some sort of delay just to make sure GPS callback sends data first 
         if self.euler_data_lock <= 50:
+            gps_data = f"Lat:{gps_msg.vector.x}, Lon:{gps_msg.vector.y}"
+            self.client_socket.sendto(gps_data.encode(), self.server_address)
+            print(gps_data)
+            
+            # Some sort of delay just to make sure GPS callback sends data first 
             self.euler_data_lock += 1
 
     def euler_callback(self, euler_msg):

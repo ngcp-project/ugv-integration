@@ -3,8 +3,6 @@ import math
 import re
 import time
 
-
-line = "Made it to LatLon00, q2: 0.03, q3: 0.05  |Roll: -0.10, Pitch: 3.46, Yaw: 5.81  |Lat: 33.968678, Lon: -117.7058487  |Alt:  194.57  |E:   -0.17, N:   -0.05, U:   -0.03"
 lat_lon_pattern = r"Lat:\s*([-\d.]+),\s*Lon:\s*([-\d.]+)"
 heading_pattern = r"Yaw:\s*([-\d\.]+)"
 
@@ -26,8 +24,6 @@ drive_nucelo_port = 8
 
 linear_vel = -0.40  # Set a constant velocity for autonomy
 steer_val = 0 # Does not matter what value is, Just need it send that data order in udp payload is maintained
-
-
 
 def gps_to_local(lat_current, lon_current, lat_goal, lon_goal):
     """
@@ -75,16 +71,14 @@ def gps_to_local(lat_current, lon_current, lat_goal, lon_goal):
     ## Goal Heading 
     if  -269.0 <= angle_standard and angle_standard <= -178.0:
         angle_standard += 360
-    
     return angle_standard
 
 def main():
     # Example GPS coordinates (in degrees)
-
     #### Cal Poly Pomona Coordinates
     # Right Outside Engineering Building
-    lat_current = 34.058832
-    lon_current = -117.821626
+ #   lat_current = 34.058832
+ #   lon_current = -117.821626
     
     lat_goal = 34.059346
     lon_goal = -117.8210931
@@ -105,7 +99,7 @@ def main():
             lon_current = float(lon_str)
             
             print(lat_current)
-            print(lon_goal)
+            print(lon_current)
             goal_heading = gps_to_local(lat_current, lon_current, lat_goal, lon_goal)
             heading_lock += 1
         else:
@@ -114,21 +108,21 @@ def main():
     while True:
         # Udp receive 
         xsens_data, client_address = host_sock.recvfrom(1024)
-        print(f"Received message: {xsens_data.decode()} from {client_address}")
+        #print(f"Received message: {xsens_data.decode()} from {client_address}")
         heading_match = re.search(heading_pattern, xsens_data.decode())
-        actual_heading_str = heading_match.group(1)
-        actual_heading = float(actual_heading_str)
-        heading_error = goal_heading - actual_heading
-
-        heading_error = heading_error/100
-        udp_payload = f"{linear_vel}, {steer_val}, {heading_error}".encode()
-        server_socket.sendto(udp_payload, (drive_nucelo_ip, drive_nucelo_port))
-        #self.host_sock.sendto(payload, (self.client_add, self.client_port)) 
-        time.sleep(.010)
-        print(f"Goal Heading: {goal_heading}, Actual Heading: {actual_heading}, Error: {heading_error * 100}")
-
-
-
+        if heading_match:
+            actual_heading_str = heading_match.group(1)
+            actual_heading = float(actual_heading_str)
+            heading_error = goal_heading - actual_heading
+            heading_error = round(heading_error, 3) #Three 3 places of precisions 
+            heading_error = heading_error/100
+            udp_payload = f"{linear_vel}, {steer_val}, {heading_error}".encode()
+            server_socket.sendto(udp_payload, (drive_nucelo_ip, drive_nucelo_port))
+            #self.host_sock.sendto(payload, (self.client_add, self.client_port)) 
+            time.sleep(.010)
+            print(f"Goal Heading: {goal_heading}, Actual Heading: {actual_heading}, Error: {heading_error * 100}")
+        else:
+            print("Could not find Yaw string")
 
 if __name__ == "__main__":
     main()
