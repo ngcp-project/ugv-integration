@@ -16,33 +16,34 @@ class Ugv_Xsens(Node):
         
         self.heading_sub = self.create_subscription(Vector3Stamped, "filter/euler", self.euler_callback, 10)
         self.gps = self.create_subscription(Vector3Stamped, "filter/positionlla", self.gps_callback, 10)
-        # self.host_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
-        # host_add = "localhost"
-        # host_port = 22222
-        # self.host_sock.bind((host_add, host_port))
+        self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
-        # self.client_add = "localhost"
-        # self.client_port = 44444
-
-        ## UDP setup to Tx data to nucelo 
-        # self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-
-        # # Bind the server to an IP and port (localhost and port 12345 in this case)
-        # self.server_address = ('192.168.20.5', 12345)  # Replace with your server's IP
-        # self.server_socket.bind(self.server_address)
-
-        # # Define the known client IP and port
-        # self.client_ip = '192.168.20.21'
-        # self.client_port = 8   
+        # Server address (localhost and port 22222)
+        self.server_address = ('localhost', 22222)
 
         self.goal_heading = 0.0
         self.linear_vel = -0.70  # Set a constant velocity for autonomy
         self.steer_val = 0 # Does not matter what value is, Just need it send that data order in udp payload is maintained
+        self.euler_data_lock = 0
 
-    
     def gps_callback(self, gps_msg):
-        print(f"Lat:{gps_msg.vector.x}, Lon: {gps_msg.vector.y}")
+        gps_data = f"Lat:{gps_msg.vector.x}, Lon:{gps_msg.vector.y}"
+        self.client_socket.sendto(gps_data.encode(), self.server_address)
+        print(gps_data)
+        
+        # Some sort of delay just to make sure GPS callback sends data first 
+        if self.euler_data_lock <= 50:
+            self.euler_data_lock += 1
+
+    def euler_callback(self, euler_msg):
+        if self.euler_data_lock >= 50:
+            yaw = euler_msg.vector.z 
+            yaw_str = f"Yaw: {yaw}"
+            self.client_socket.sendto(yaw_str.encode(), self.server_address)
+            print(yaw_str)
+
+        
 
     # def euler_callback(self, euler_msg):
         
