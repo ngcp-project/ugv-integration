@@ -43,7 +43,7 @@ class Ugv_Xsens(Node):
         
         self.act_heading = euler_msg.vector.z #Get actual yaw from xsens
         self.heading_error = self.goal_heading - self.act_heading
-        self.heading_error = self.heading_error/100  #Scale down to a value that the nucalo can accept 
+        self.heading_error = self.heading_error/100  #Scale down to a value that the nucelo can accept 
         udp_payload = f"{self.linear_vel}, {self.steer_val}, {self.heading_error}".encode()
         self.server_socket.sendto(udp_payload, (self.client_ip, self.client_port))
         #self.host_sock.sendto(payload, (self.client_add, self.client_port)) 
