@@ -22,7 +22,7 @@ server_socket.bind(server_address)
 drive_nucelo_ip = '192.168.20.21'
 drive_nucelo_port = 8   
 
-linear_vel = -0.40  # Set a constant velocity for autonomy
+linear_vel = -0.70  # Set a constant velocity for autonomy
 steer_val = 0 # Does not matter what value is, Just need it send that data order in udp payload is maintained
 
 def gps_to_local(lat_current, lon_current, lat_goal, lon_goal):
@@ -80,9 +80,12 @@ def main():
  #   lat_current = 34.058832
  #   lon_current = -117.821626
     
-    lat_goal = 34.059346
-    lon_goal = -117.8210931
-
+    #lat_goal = 34.059346
+    #lon_goal = -117.8210931
+    #lat_goal = 34.059333
+    #lon_goal = -117.8212890
+    lat_goal = 34.059356
+    lon_goal = -117.8213272
     heading_lock = 0
 
     while heading_lock == 0:
@@ -114,8 +117,8 @@ def main():
             actual_heading_str = heading_match.group(1)
             actual_heading = float(actual_heading_str)
             heading_error = goal_heading - actual_heading
-            heading_error = round(heading_error, 3) #Three 3 places of precisions 
             heading_error = heading_error/100
+            heading_error = round(heading_error, 3) #Three 3 places of precisions 
             udp_payload = f"{linear_vel}, {steer_val}, {heading_error}".encode()
             server_socket.sendto(udp_payload, (drive_nucelo_ip, drive_nucelo_port))
             #self.host_sock.sendto(payload, (self.client_add, self.client_port)) 
