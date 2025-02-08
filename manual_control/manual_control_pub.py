@@ -60,7 +60,7 @@ class ugvgroundvehiclePublisher:
                 #try:
                     event1 = get_gamepad()              #reads gamepad value, hangs when no inputs
                     if event1[0].code == 'ABS_Y':
-                        cmdvelo = event1[0].state/(-MAX_JOY_VAL)
+                        cmdvelo = event1[0].state/(MAX_JOY_VAL)
                         if -15/100 <= cmdvelo and cmdvelo <= 15/100:            #deadzone
                             cmdvelo = 0
                     if event1[0].code == 'ABS_RX':

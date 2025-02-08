@@ -53,6 +53,13 @@ class ugvgroundvehicleSubscriber:
         client_ip = '192.168.20.21'
         client_port = 8   
 
+        # Create Socket for Xsens 
+        xsens_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+
+        # Another udp server and client to receive Xsens Data 
+        xsens_client_address = ("localhost", 44444)
+        xsens_socket.bind(xsens_client_address)
+
         # Initialize samples_read to zero
         samples_read = 0
 
@@ -63,12 +70,15 @@ class ugvgroundvehicleSubscriber:
             nonlocal samples_read
             nonlocal reader
             samples = reader.take_data()
-            
-            udp_payload = f"{samples[0].velocity}, {samples[0].SteeringAngle}".encode()
+
+            heading_error, sender_address = xsens_socket.recvfrom(10)
+            heading_error = float(heading_error.decode())
+            heading_error = heading_error/100  #Scale down to a value that the nucalo can accept 
+            print(f"(velocity, angle, head error): ({samples[0].velocity}, {samples[0].SteeringAngle}, {heading_error})")
+            udp_payload = f"{samples[0].velocity}, {samples[0].SteeringAngle}, {heading_error}".encode()
             server_socket.sendto(udp_payload, (client_ip, client_port))
             
-            print(f"{samples[0].velocity}, {samples[0].SteeringAngle}")
-            #time.sleep(.010) #10ms
+            time.sleep(.010) #10ms
             samples_read += ugvgroundvehicleSubscriber.process_data(reader)
             
         # Obtain the DataReader's Status Condition
