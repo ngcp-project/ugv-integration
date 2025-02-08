@@ -89,6 +89,7 @@ XML" chapter in the RTI Connext DDS Core Libraries User's Manual.
                     <initial_peers>
                         <element>10.110.174.104</element>
                         <element>10.110.134.238</element>
+                        <element>192.168.1.210</element>
                     </initial_peers>
                 </discovery>
 
