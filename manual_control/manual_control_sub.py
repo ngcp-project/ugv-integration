@@ -64,12 +64,16 @@ class ugvgroundvehicleSubscriber:
             nonlocal reader
             samples = reader.take_data()
             
-            udp_payload = f"{samples[0].velocity}, {samples[0].SteeringAngle}".encode()
-            server_socket.sendto(udp_payload, (client_ip, client_port))
-            
-            print(f"{samples[0].velocity}, {samples[0].SteeringAngle}")
-            #time.sleep(.010) #10ms
-            samples_read += ugvgroundvehicleSubscriber.process_data(reader)
+            print(type(samples))
+            if(len(samples) != 0):
+                udp_payload = f"{samples[0].velocity}, {samples[0].SteeringAngle}".encode()
+                server_socket.sendto(udp_payload, (client_ip, client_port))
+                
+                print(f"{samples[0].velocity}, {samples[0].SteeringAngle}")
+                #time.sleep(.010) #10ms
+                samples_read += ugvgroundvehicleSubscriber.process_data(reader)
+            else:
+                print("Data buffer is an empty list")
             
         # Obtain the DataReader's Status Condition
         status_condition = dds.StatusCondition(reader)
