@@ -36,7 +36,7 @@ class ugvgroundvehiclePublisher:
         ugv_manual = ugvgroundvehicle()
 
         def timeout_handler(signum, frame):             #on alarm, writes velo and steering angle to publisher
-            if lt_val > 1000: # If the left trigger is depressed, send payload arm commands 
+            if lt_val > 1000: # If the left trigger is pressed, send payload arm commands 
                 arm_cmd = True
                 print(f"Up/Down Dpad: {ud_dpad}, L/R Dpad: {lr_dpad}")
             else:             #If left trigger is not pressed, send arm commands
