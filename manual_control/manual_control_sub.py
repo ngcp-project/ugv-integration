@@ -64,8 +64,8 @@ class ugvgroundvehicleSubscriber:
             nonlocal reader
             samples = reader.take_data()
             
-            print(type(samples))
-            if(len(samples) != 0):
+            #Check if samples is an empty list (indicating that controller is disconnected)
+            if(len(samples) != 0): 
                 udp_payload = f"{samples[0].velocity}, {samples[0].SteeringAngle}".encode()
                 server_socket.sendto(udp_payload, (client_ip, client_port))
                 

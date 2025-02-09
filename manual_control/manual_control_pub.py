@@ -18,9 +18,6 @@ import signal
 
 SCALE_FACTOR = -32700
 MAX_JOY_VAL = 2**15 # max input of 32,768
-#velocity = 0 # linear velocity Y
-#angle = 0 # steering angle X
-
 
 class ugvgroundvehiclePublisher:
     @staticmethod
@@ -39,44 +36,66 @@ class ugvgroundvehiclePublisher:
         ugv_manual = ugvgroundvehicle()
 
         def timeout_handler(signum, frame):             #on alarm, writes velo and steering angle to publisher
-            ugv_manual.velocity = cmdvelo
-            ugv_manual.SteeringAngle = cmdangle
-            print(f"Linear Velocity: {ugv_manual.velocity}, Steering Angle: {ugv_manual.SteeringAngle}")
+            if lt_val > 1000: # If the left trigger is depressed, send payload arm commands 
+                arm_cmd = True
+                print(f"Up/Down Dpad: {ud_dpad}, L/R Dpad: {lr_dpad}")
+            else:             #If left trigger is not pressed, send arm commands
+                ugv_manual.velocity = cmdvelo
+                ugv_manual.SteeringAngle = cmdangle
+                print(f"Linear Velocity: {ugv_manual.velocity}, Steering Angle: {ugv_manual.SteeringAngle}")
+                        
             writer.write(ugv_manual)
-            signal.setitimer(signal.ITIMER_REAL, 0.002) # Decreased from 20ms to 2ms (Chris)
+            signal.setitimer(signal.ITIMER_REAL, 0.02) # Decreased from 20ms to 2ms (Chris)
             #raise Exception                             #triggers exception in the try block
 
         cmdvelo = 0
         cmdangle = 0
+        l_bumper = 0
+        r_bumper = 0
+        arm_cmd = False
+        lt_val = 0
+        ud_dpad = 0
+        lr_dpad = 0
 
         signal.signal(signal.SIGALRM, timeout_handler)  #Routes alarm to timeout handler
-
-        signal.setitimer(signal.ITIMER_REAL, 0.002)      #timer delay in seconds, float
-
+        signal.setitimer(signal.ITIMER_REAL, 0.02)      #timer delay in seconds, float
 
         for count in range(sample_count):
         # Start of new code
             try:
-                #try:
-                    event1 = get_gamepad()              #reads gamepad value, hangs when no inputs
-                    if event1[0].code == 'ABS_Y':
-                        cmdvelo = event1[0].state/(MAX_JOY_VAL)
-                        if -15/100 <= cmdvelo and cmdvelo <= 15/100:            #deadzone
-                            cmdvelo = 0
-                    if event1[0].code == 'ABS_RX':
-                        cmdangle = event1[0].state/(-MAX_JOY_VAL)
-                        if -15/100 <= cmdangle and cmdangle <= 15/100:           #deadzone
-                            cmdangle = 0
-                        if cmdangle > 1.0:  # Dont want 1.08 or something like this
-                            cmdangle = 1.0
+                event1 = get_gamepad()              #reads gamepad value, hangs when no inputs
+                if event1[0].code == 'ABS_Y':
+                    cmdvelo = event1[0].state/(MAX_JOY_VAL)
+                    if -15/100 <= cmdvelo and cmdvelo <= 15/100:            #deadzone
+                        cmdvelo = 0
+                if event1[0].code == 'ABS_RX':
+                    cmdangle = event1[0].state/(-MAX_JOY_VAL)
+                    if -15/100 <= cmdangle and cmdangle <= 15/100:           #deadzone
+                        cmdangle = 0
+                    if cmdangle > 1.0:  # Dont want 1.08 or something like this
+                        cmdangle = 1.0
 
-                                            #If adding buttons, store button state
+                ## Commands for payload arm actuation
 
-                #except Exception:
-                #    signal.setitimer(signal.ITIMER_REAL, 0.02) #resets timer after handler raises Exception
+                if event1[0].code == "ABS_Z":
+                    lt_val = event1[0].state 
+
+                if event1[0].code == "ABS_HAT0Y":
+                    ud_dpad = event1[0].state     
+            
+                if event1[0].code == "ABS_HAT0X":
+                    lr_dpad = event1[0].state
                 
+                ## Commands to signal Autonomous enable. Autonous enable not implemented yet 
+                if event1[0].code == 'BTN_TR':
+                    r_bumper = event1[0].state
+                    print("Right bumper action")
+
+                if event1[0].code == 'BTN_TL':
+                   l_bumper = event1[0].state
+                   print("Left bumper action")
             except KeyboardInterrupt:
-                break			
+                break
         print("Preparing to shut down...")
 
 
