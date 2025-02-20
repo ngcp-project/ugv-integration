@@ -66,10 +66,10 @@ class ugvgroundvehicleSubscriber:
             
             #Check if samples is an empty list (indicating that controller is disconnected)
             if(len(samples) != 0): 
-                udp_payload = f"{samples[0].velocity}, {samples[0].SteeringAngle}".encode()
+                udp_payload = f"{samples[0].linear_vel}, {samples[0].steer_cmd}".encode()
                 server_socket.sendto(udp_payload, (client_ip, client_port))
                 
-                print(f"{samples[0].velocity}, {samples[0].SteeringAngle}")
+                print(udo_payload)
                 #time.sleep(.010) #10ms
                 samples_read += ugvgroundvehicleSubscriber.process_data(reader)
             else:

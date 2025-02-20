@@ -40,8 +40,8 @@ class ugvgroundvehiclePublisher:
                 arm_cmd = True
                 print(f"Up/Down Dpad: {ud_dpad}, L/R Dpad: {lr_dpad}")
             else:             #If left trigger is not pressed, send arm commands
-                ugv_manual.velocity = cmdvelo
-                ugv_manual.SteeringAngle = cmdangle
+                ugv_manual.linear_vel = cmdvelo
+                ugv_manual.steer_cmd = cmdangle
                 print(f"Linear Velocity: {ugv_manual.velocity}, Steering Angle: {ugv_manual.SteeringAngle}")
                         
             writer.write(ugv_manual)
