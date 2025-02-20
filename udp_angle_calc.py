@@ -77,8 +77,8 @@ def main():
     # Example GPS coordinates (in degrees)
     #### Cal Poly Pomona Coordinates
     # Right Outside Engineering Building
- #   lat_current = 34.058832
- #   lon_current = -117.821626
+   #lat_current = 34.058832
+   #lon_current = -117.821626
     
     #lat_goal = 34.059346
     #lon_goal = -117.8210931
@@ -105,8 +105,12 @@ def main():
             print(lon_current)
             goal_heading = gps_to_local(lat_current, lon_current, lat_goal, lon_goal)
             heading_lock += 1
+
+    
         else:
             print("Could not find Lat, Lon in the string.")
+    
+    print(f"Goal Lat: {lat_goal}, Goal Lon: {lon_goal}, Current Lat: {lat_current}, Current Lon: {lon_current}")
     
     while True:
         # Udp receive 
