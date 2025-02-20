@@ -69,7 +69,7 @@ class ugvgroundvehicleSubscriber:
                 udp_payload = f"{samples[0].linear_vel}, {samples[0].steer_cmd}".encode()
                 server_socket.sendto(udp_payload, (client_ip, client_port))
                 
-                print(udo_payload)
+                print(f"{samples[0].linear_vel}, {samples[0].steer_cmd}, {samples[0].arm_cmd[0]}")
                 #time.sleep(.010) #10ms
                 samples_read += ugvgroundvehicleSubscriber.process_data(reader)
             else:
