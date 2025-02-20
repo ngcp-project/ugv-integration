@@ -27,11 +27,16 @@ def gamepad_read_and_store():
                 cmdangle = event1[0].state
 
         except Exception as e:
-            print(f"gamepad crashed :( Error: {e}")
+            print(f"-------------------------------------------Gamepad Error: {e}")
+            cmdangle = 0
+            cmdvelo = 0
+            time.sleep(.01) #wait before rechecking if gamepad is plugged in
             #from inputs import get_gamepad
+        #time.sleep(.002) #this sleep keeps the thread from running constantly, add time to reduce load on thread cause there is no real parallel processing in python
 
 
 def monitor_gamepad():
+    """unnecessary function for the actual"""
     if gamepad_thread.is_alive():
         gamepad_thread.join(.1)   # how long it'll wait for the update
     else:
@@ -40,11 +45,10 @@ def monitor_gamepad():
 
     
 if __name__ == "__main__":
-    gamepad_threads = []
     shutdown = False
 
     gamepad_thread = threading.Thread(target=gamepad_read_and_store)
-    time.sleep(.5)
+    time.sleep(.1)
 
     gamepad_thread.start()
 
@@ -58,7 +62,7 @@ if __name__ == "__main__":
         except KeyboardInterrupt:
             break
         except Exception as e:
-            print(e)
+            print(f"main error: {e}")
 
 
     shutdown = True
