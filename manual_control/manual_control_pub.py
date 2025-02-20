@@ -12,7 +12,7 @@
 import time
 import sys
 import rti.connextdds as dds
-from ugvgroundvehicle import ugvgroundvehicle
+from man_ctrl import man_ctrl
 from inputs import get_gamepad
 import signal
 
@@ -28,12 +28,12 @@ class ugvgroundvehiclePublisher:
         participant = dds.DomainParticipant(domain_id)
 
         # A Topic has a name and a datatype.
-        topic = dds.Topic(participant, "ugvgroundvehicle", ugvgroundvehicle)
+        topic = dds.Topic(participant, "man_ctrl", man_ctrl)
 
         # This DataWriter will write data on Topic "Example ugvgroundvehicle"
         # DataWriter QoS is configured in USER_QOS_PROFILES.xml
         writer = dds.DataWriter(participant.implicit_publisher, topic)
-        ugv_manual = ugvgroundvehicle()
+        ugv_manual = man_ctrl()
 
         def timeout_handler(signum, frame):             #on alarm, writes velo and steering angle to publisher
             if lt_val > 1000: # If the left trigger is pressed, send payload arm commands 

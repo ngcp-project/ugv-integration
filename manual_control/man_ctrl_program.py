@@ -13,8 +13,8 @@ import argparse
 import sys
 from dataclasses import dataclass
 
-from ugvgroundvehicle_publisher import ugvgroundvehiclePublisher
-from ugvgroundvehicle_subscriber import ugvgroundvehicleSubscriber
+from man_ctrl_publisher import man_ctrlPublisher
+from man_ctrl_subscriber import man_ctrlSubscriber
 
 @dataclass
 class ApplicationArguments:
@@ -28,13 +28,13 @@ def main():
     args: ApplicationArguments = parse_arguments()
 
     if args.pub:
-        print(f"Running ugvgroundvehiclePublisher on domain {args.domain}")
-        ugvgroundvehiclePublisher.run_publisher(
+        print(f"Running man_ctrlPublisher on domain {args.domain}")
+        man_ctrlPublisher.run_publisher(
             domain_id=args.domain,
             sample_count=args.sample_count)
     else:
-        print(f"Running ugvgroundvehicleSubscriber on domain {args.domain}")
-        ugvgroundvehicleSubscriber.run_subscriber(
+        print(f"Running man_ctrlSubscriber on domain {args.domain}")
+        man_ctrlSubscriber.run_subscriber(
             domain_id=args.domain,
             sample_count=args.sample_count)
 

@@ -1,4 +1,4 @@
-;
+
 # (c) Copyright, Real-Time Innovations, 2022.  All rights reserved.
 # RTI grants Licensee a license to use, modify, compile, and create derivative
 # works of the software solely for use with RTI Connext DDS. Licensee may
@@ -12,9 +12,9 @@
 import time
 import sys
 import rti.connextdds as dds
-from ugvgroundvehicle import ugvgroundvehicle
+from man_ctrl import man_ctrl
 
-class ugvgroundvehiclePublisher:
+class man_ctrlPublisher:
 
     @staticmethod
     def run_publisher(domain_id: int, sample_count: int):
@@ -25,19 +25,19 @@ class ugvgroundvehiclePublisher:
         participant = dds.DomainParticipant(domain_id)
 
         # A Topic has a name and a datatype.
-        topic = dds.Topic(participant, "Example ugvgroundvehicle", ugvgroundvehicle)
+        topic = dds.Topic(participant, "Example man_ctrl", man_ctrl)
 
-        # This DataWriter will write data on Topic "Example ugvgroundvehicle"
+        # This DataWriter will write data on Topic "Example man_ctrl"
         # DataWriter QoS is configured in USER_QOS_PROFILES.xml
         writer = dds.DataWriter(participant.implicit_publisher, topic)
-        sample = ugvgroundvehicle()        
+        sample = man_ctrl()        
 
         for count in range(sample_count):
             # Catch control-C interrupt
             try:
                 # Modify the data to be sent here
                 
-                print(f"Writing ugvgroundvehicle, count {count}")
+                print(f"Writing man_ctrl, count {count}")
                 writer.write(sample)
                 time.sleep(1)
             except KeyboardInterrupt:
@@ -47,6 +47,6 @@ class ugvgroundvehiclePublisher:
 
 
 if __name__ == "__main__":
-    ugvgroundvehiclePublisher.run_publisher(
+    man_ctrlPublisher.run_publisher(
             domain_id=0,
             sample_count=sys.maxsize)

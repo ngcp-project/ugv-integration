@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- 
 Description
-XML QoS Profile for ugvgroundvehicle
+XML QoS Profile for man_ctrl
 
 (c) Copyright, Real-Time Innovations, 2012.  All rights reserved.
 RTI grants Licensee a license to use, modify, compile, and create derivative
@@ -49,30 +49,30 @@ XML" chapter in the RTI Connext DDS Core Libraries User's Manual.
 -->
 
 <dds xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-     xsi:noNamespaceSchemaLocation="file:////home/ugv/rti_connext_dds-rpi/resource/schema/rti_dds_qos_profiles.xsd">
+     xsi:noNamespaceSchemaLocation="file:////opt/rti_connext_dds-7.3.0/resource/schema/rti_dds_qos_profiles.xsd">
     <!-- QoS Library containing the QoS profile used in the generated example.
 
         A QoS library is a named set of QoS profiles.
     -->
-    <qos_library name="ugvgroundvehicle_Library">
+    <qos_library name="man_ctrl_Library">
 
         <!-- QoS profile used to configure reliable communication between the DataWriter 
              and DataReader created in the example code.
 
              A QoS profile groups a set of related QoS.
         -->
-        <qos_profile name="ugvgroundvehicle_Profile" base_name="BuiltinQosLib::Generic.StrictReliable" is_default_qos="true">
+        <qos_profile name="man_ctrl_Profile" base_name="BuiltinQosLib::Generic.StrictReliable" is_default_qos="true">
             <!-- QoS used to configure the data writer created in the example code -->                
             <datawriter_qos>
                 <publication_name>
-                    <name>ugvgroundvehicleDataWriter</name>
+                    <name>man_ctrlDataWriter</name>
                 </publication_name>
             </datawriter_qos>
 
             <!-- QoS used to configure the data reader created in the example code -->                
             <datareader_qos>
                 <subscription_name>
-                    <name>ugvgroundvehicleDataReader</name>
+                    <name>man_ctrlDataReader</name>
                 </subscription_name>
             </datareader_qos>
             <domain_participant_qos>
@@ -82,20 +82,15 @@ XML" chapter in the RTI Connext DDS Core Libraries User's Manual.
                 application from another when you're debugging.
                 -->
                 <participant_name>
-                    <name>ugvgroundvehicleParticipant</name>
-                    <role_name>ugvgroundvehicleParticipantRole</role_name>
+                    <name>man_ctrlParticipant</name>
+                    <role_name>man_ctrlParticipantRole</role_name>
                 </participant_name>
-                <discovery>
-                    <initial_peers>
-                        <element>10.110.174.104</element>
-			<element>10.110.129.138</element>
-                        <element>10.110.134.238</element>
-                        <element>192.168.1.210</element>
-                        <element>192.168.1.159</element>
-			<element>10.110.129.138</element>
-			<element>10.110.170.168</element>
-                    </initial_peers>
-                </discovery>
+		<discovery>
+			<initial_peers>
+				<element>10.110.129.138</element>   <!-- Ip address of ugv raspberry Pi4B on edurom (Subject to change)-->
+				<element>10.110.170.168</element>   <!-- Ip address of chris macbook on edurom-->
+			</initial_peers>
+		</discovery>
 
             </domain_participant_qos>
         </qos_profile>

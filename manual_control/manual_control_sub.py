@@ -12,7 +12,7 @@
 import time
 import sys
 import rti.connextdds as dds
-from ugvgroundvehicle import ugvgroundvehicle
+from man_ctrl import man_ctrl
 
 import socket
 class ugvgroundvehicleSubscriber:
@@ -37,7 +37,7 @@ class ugvgroundvehicleSubscriber:
         participant = dds.DomainParticipant(domain_id)
 
         # A Topic has a name and a datatype.
-        topic = dds.Topic(participant, "ugvgroundvehicle", ugvgroundvehicle)
+        topic = dds.Topic(participant, "man_ctrl", man_ctrl)
 
         # This DataReader reads data on Topic "Example ugvgroundvehicle".
         # DataReader QoS is configured in USER_QOS_PROFILES.xml

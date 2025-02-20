@@ -12,9 +12,9 @@
 import time
 import sys
 import rti.connextdds as dds
-from ugvgroundvehicle import ugvgroundvehicle
+from man_ctrl import man_ctrl
 
-class ugvgroundvehicleSubscriber:
+class man_ctrlSubscriber:
 
     @staticmethod
     def process_data(reader):
@@ -36,9 +36,9 @@ class ugvgroundvehicleSubscriber:
         participant = dds.DomainParticipant(domain_id)
 
         # A Topic has a name and a datatype.
-        topic = dds.Topic(participant, "Example ugvgroundvehicle", ugvgroundvehicle)
+        topic = dds.Topic(participant, "Example man_ctrl", man_ctrl)
 
-        # This DataReader reads data on Topic "Example ugvgroundvehicle".
+        # This DataReader reads data on Topic "Example man_ctrl".
         # DataReader QoS is configured in USER_QOS_PROFILES.xml
         reader = dds.DataReader(participant.implicit_subscriber, topic)
 
@@ -51,7 +51,7 @@ class ugvgroundvehicleSubscriber:
         def condition_handler(_):
             nonlocal samples_read
             nonlocal reader
-            samples_read += ugvgroundvehicleSubscriber.process_data(reader)
+            samples_read += man_ctrlSubscriber.process_data(reader)
 
         # Obtain the DataReader's Status Condition
         status_condition = dds.StatusCondition(reader)
@@ -79,6 +79,6 @@ class ugvgroundvehicleSubscriber:
 
 
 if __name__ == "__main__":
-    ugvgroundvehicleSubscriber.run_subscriber(
+    man_ctrlSubscriber.run_subscriber(
             domain_id=0,
             sample_count=sys.maxsize)
