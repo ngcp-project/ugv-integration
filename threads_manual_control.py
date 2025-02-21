@@ -16,6 +16,7 @@ def gamepad_manager():
     global r_bumper 
     global arm_cmd 
     global lt_val 
+    global rt_val
     global ud_dpad 
     global lr_dpad 
     global MAX_JOY_VAL
@@ -97,7 +98,7 @@ class man_ctrlPublisher:
         
         global shutdown_threads
 
-        gamepad_manager_thread = threading.Thread(target=gamepad_manager,args=(cmdvelo,cmdangle,l_bumper,r_bumper,arm_cmd,lt_val,ud_dpad,lr_dpad,MAX_JOY_VAL))
+        gamepad_manager_thread = threading.Thread(target=gamepad_manager,args=())
         gamepad_manager_thread.start()
 
 
