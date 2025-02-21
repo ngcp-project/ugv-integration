@@ -44,7 +44,7 @@ class ugvgroundvehiclePublisher:
             elif rt_val > 1000 and lt_val < 1000: # If the right trigger is pressed, send payload arm commands
                 arm_cmd = True
                 if ugv_manual.arm_cmd[1] >= 0 and ugv_manual.arm_cmd[1] <= 20:
-                ugv_manual.arm_cmd[1] += ud_dpad*2 
+                    ugv_manual.arm_cmd[1] += ud_dpad*2 
                 print(f"Up/Down Dpad: {ud_dpad}, L/R Dpad: {lr_dpad}")
 
             else:             #If left trigger is not pressed, send arm commands
