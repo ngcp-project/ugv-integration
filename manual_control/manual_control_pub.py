@@ -36,10 +36,15 @@ class ugvgroundvehiclePublisher:
         ugv_manual = man_ctrl()
 
         def timeout_handler(signum, frame):             #on alarm, writes velo and steering angle to publisher
-            if lt_val > 1000: # If the left trigger is pressed, send payload arm commands 
+            if lt_val > 1000 and rt_val < 1000: # If the left trigger is pressed, send payload arm commands 
                 arm_cmd = True
                 ugv_manual.arm_cmd[0] += ud_dpad*2 
                 print(f"Up/Down Dpad: {ud_dpad}, L/R Dpad: {lr_dpad}")
+            elif rt_val > 1000 and lt_val < 1000: # If the right trigger is pressed, send payload arm commands
+                arm_cmd = True
+                ugv_manual.arm_cmd[1] += ud_dpad*2 
+                print(f"Up/Down Dpad: {ud_dpad}, L/R Dpad: {lr_dpad}")
+
             else:             #If left trigger is not pressed, send arm commands
                 ugv_manual.linear_vel = cmdvelo
                 ugv_manual.steer_cmd = cmdangle
@@ -55,6 +60,7 @@ class ugvgroundvehiclePublisher:
         r_bumper = 0
         arm_cmd = False
         lt_val = 0
+        rt_val = 0
         ud_dpad = 0
         lr_dpad = 0
 
@@ -80,6 +86,9 @@ class ugvgroundvehiclePublisher:
 
                 if event1[0].code == "ABS_Z":
                     lt_val = event1[0].state 
+
+                if event1[0].code == "ABS_RZ":
+                    rt_val = event1[0].state 
 
                 if event1[0].code == "ABS_HAT0Y":
                     ud_dpad = event1[0].state     
