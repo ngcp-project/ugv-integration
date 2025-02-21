@@ -70,6 +70,8 @@ def gamepad_manager():
             lt_val = 0
             ud_dpad = 0
             lr_dpad = 0
+            from inputs import get_gamepad
+
 
             time.sleep(.01) #wait before rechecking if gamepad is plugged in
 
