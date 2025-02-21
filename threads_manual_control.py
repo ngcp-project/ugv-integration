@@ -39,6 +39,9 @@ def gamepad_manager():
             if event1[0].code == "ABS_Z":
                 lt_val = event1[0].state 
 
+            if event1[0].code == "ABS_RZ":
+                rt_val = event1[0].state 
+
             if event1[0].code == "ABS_HAT0Y":
                 ud_dpad = event1[0].state     
         
@@ -156,6 +159,7 @@ if __name__ == "__main__":
     r_bumper = 0
     arm_cmd = False
     lt_val = 0
+    rt_val = 0
     ud_dpad = 0
     lr_dpad = 0
 
