@@ -91,6 +91,9 @@ class man_ctrlPublisher:
         writer = dds.DataWriter(participant.implicit_publisher, topic)
         ugv_manual = man_ctrl()
 
+        
+        global shutdown_threads
+
         gamepad_manager_thread = threading.Thread(target=gamepad_manager,args=(cmdvelo,cmdangle,l_bumper,r_bumper,arm_cmd,lt_val,ud_dpad,lr_dpad,MAX_JOY_VAL))
         gamepad_manager_thread.start()
 
@@ -98,17 +101,31 @@ class man_ctrlPublisher:
         while True:
             try:
                 #main loop
-                if lt_val > 1000: # If the left trigger is pressed, send payload arm commands 
+                if lt_val > 1000 and rt_val < 1000: # If the left trigger is pressed, send payload arm commands 
                     arm_cmd = True
+                    ugv_manual.arm_cmd[0] += ud_dpad*2 
+                    if ugv_manual.arm_cmd[0] < -100:
+                        ugv_manual.arm_cmd[0] = -100
+                    elif ugv_manual.arm_cmd[0] > 10:
+                        ugv_manual.arm_cmd[0] = 10
                     print(f"Up/Down Dpad: {ud_dpad}, L/R Dpad: {lr_dpad}")
+                elif rt_val > 1000 and lt_val < 1000: # If the right trigger is pressed, send payload arm commands
+                    arm_cmd = True
+                    ugv_manual.arm_cmd[1] += ud_dpad*2 
+                    if ugv_manual.arm_cmd[1] < 0:
+                        ugv_manual.arm_cmd[1] = 0
+                    elif ugv_manual.arm_cmd[1] > 100:
+                        ugv_manual.arm_cmd[1] = 100
+                    print(f"Up/Down Dpad: {ud_dpad}, L/R Dpad: {lr_dpad}")
+
                 else:             #If left trigger is not pressed, send arm commands
-                    ugv_manual.velocity = cmdvelo
-                    ugv_manual.SteeringAngle = cmdangle
-                    arm_cmd = False
-                    print(f"Linear Velocity: {ugv_manual.velocity}, Steering Angle: {ugv_manual.SteeringAngle}")
-                
+                    ugv_manual.linear_vel = cmdvelo
+                    ugv_manual.steer_cmd = cmdangle
+                    print(f"Linear Velocity: {ugv_manual.linear_vel}, Steering Angle: {ugv_manual.steer_cmd}")
+                            
+
                 writer.write(ugv_manual)
-                time.sleep(.2)
+                time.sleep(.2) # delay between writes
 
             except KeyboardInterrupt:
                 print("Loop interrupted by user")
