@@ -1,0 +1,13 @@
+// Temperature data type
+struct man_ctrl {
+
+    // Linear Velocity
+    float linear_vel;
+
+    // Servo Steering Angle 
+    float steer_cmd;
+
+    float arm_cmd[5];
+
+    boolean autonomous_enable; 
+};

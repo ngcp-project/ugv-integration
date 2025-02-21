@@ -5,10 +5,77 @@ import time
 import time
 import sys
 import rti.connextdds as dds
-from ugvgroundvehicle import ugvgroundvehicle
-import signal
+from man_ctrl import man_ctrl
+#import signal
 
-class ugvgroundvehiclePublisher:
+def gamepad_manager():
+
+    global cmdvelo 
+    global cmdangle 
+    global l_bumper 
+    global r_bumper 
+    global arm_cmd 
+    global lt_val 
+    global ud_dpad 
+    global lr_dpad 
+    global MAX_JOY_VAL
+    global shutdown_threads 
+
+    while not shutdown_threads:
+        try:
+            event1 = get_gamepad()
+            if event1[0].code == 'ABS_Y':
+                cmdvelo = event1[0].state/(MAX_JOY_VAL)
+                if -15/100 <= cmdvelo and cmdvelo <= 15/100:            #deadzone
+                    cmdvelo = 0
+            if event1[0].code == 'ABS_RX':
+                cmdangle = event1[0].state/(-MAX_JOY_VAL)
+                if -15/100 <= cmdangle and cmdangle <= 15/100:           #deadzone
+                    cmdangle = 0
+                if cmdangle > 1.0:  # Dont want 1.08 or something like this
+                    cmdangle = 1.0
+
+            ## Commands for payload arm actuation
+            if event1[0].code == "ABS_Z":
+                lt_val = event1[0].state 
+
+            if event1[0].code == "ABS_HAT0Y":
+                ud_dpad = event1[0].state     
+        
+            if event1[0].code == "ABS_HAT0X":
+                lr_dpad = event1[0].state
+            
+            ## Commands to signal Autonomous enable. Autonous enable not implemented yet 
+            if event1[0].code == 'BTN_TR':
+                r_bumper = event1[0].state
+                print("Right bumper action")
+
+            if event1[0].code == 'BTN_TL':
+                l_bumper = event1[0].state
+                print("Left bumper action")
+
+
+        except Exception as e:
+            """sets all values to default and posts error"""
+            print(f"Gamepad Error: {e}")
+            cmdvelo = 0
+            cmdangle = 0
+            l_bumper = 0
+            r_bumper = 0
+            arm_cmd = False
+            lt_val = 0
+            ud_dpad = 0
+            lr_dpad = 0
+
+            time.sleep(.01) #wait before rechecking if gamepad is plugged in
+
+        #time.sleep(.002) #this sleep keeps the thread from running constantly, add time to reduce load on cpu cause there is no real parallel processing in python
+
+
+
+class man_ctrlPublisher:
+
+    
     @staticmethod
     def run_publisher(domain_id: int, sample_count: int):
         # A DomainParticipant allows an application to begin communicating in
@@ -17,12 +84,12 @@ class ugvgroundvehiclePublisher:
         participant = dds.DomainParticipant(domain_id)
 
         # A Topic has a name and a datatype.
-        topic = dds.Topic(participant, "ugvgroundvehicle", ugvgroundvehicle)
+        topic = dds.Topic(participant, "man_ctrl", man_ctrl)
 
-        # This DataWriter will write data on Topic "Example ugvgroundvehicle"
+        # This DataWriter will write data on Topic "Example man_ctrl"
         # DataWriter QoS is configured in USER_QOS_PROFILES.xml
         writer = dds.DataWriter(participant.implicit_publisher, topic)
-        ugv_manual = ugvgroundvehicle()
+        ugv_manual = man_ctrl()
 
         gamepad_manager_thread = threading.Thread(target=gamepad_manager,args=(cmdvelo,cmdangle,l_bumper,r_bumper,arm_cmd,lt_val,ud_dpad,lr_dpad,MAX_JOY_VAL))
         gamepad_manager_thread.start()
@@ -56,70 +123,7 @@ class ugvgroundvehiclePublisher:
 
         
 
-    def gamepad_manager():
-
-        global cmdvelo 
-        global cmdangle 
-        global l_bumper 
-        global r_bumper 
-        global arm_cmd 
-        global lt_val 
-        global ud_dpad 
-        global lr_dpad 
-        global MAX_JOY_VAL
-        global shutdown_threads 
-
-        while not shutdown_threads:
-            try:
-                event1 = get_gamepad()
-                if event1[0].code == 'ABS_Y':
-                    cmdvelo = event1[0].state/(MAX_JOY_VAL)
-                    if -15/100 <= cmdvelo and cmdvelo <= 15/100:            #deadzone
-                        cmdvelo = 0
-                if event1[0].code == 'ABS_RX':
-                    cmdangle = event1[0].state/(-MAX_JOY_VAL)
-                    if -15/100 <= cmdangle and cmdangle <= 15/100:           #deadzone
-                        cmdangle = 0
-                    if cmdangle > 1.0:  # Dont want 1.08 or something like this
-                        cmdangle = 1.0
-
-                ## Commands for payload arm actuation
-                if event1[0].code == "ABS_Z":
-                    lt_val = event1[0].state 
-
-                if event1[0].code == "ABS_HAT0Y":
-                    ud_dpad = event1[0].state     
-            
-                if event1[0].code == "ABS_HAT0X":
-                    lr_dpad = event1[0].state
-                
-                ## Commands to signal Autonomous enable. Autonous enable not implemented yet 
-                if event1[0].code == 'BTN_TR':
-                    r_bumper = event1[0].state
-                    print("Right bumper action")
-
-                if event1[0].code == 'BTN_TL':
-                    l_bumper = event1[0].state
-                    print("Left bumper action")
-
-
-            except Exception as e:
-                """sets all values to default and posts error"""
-                print(f"Gamepad Error: {e}")
-                cmdvelo = 0
-                cmdangle = 0
-                l_bumper = 0
-                r_bumper = 0
-                arm_cmd = False
-                lt_val = 0
-                ud_dpad = 0
-                lr_dpad = 0
-
-                time.sleep(.01) #wait before rechecking if gamepad is plugged in
-
-            #time.sleep(.002) #this sleep keeps the thread from running constantly, add time to reduce load on cpu cause there is no real parallel processing in python
-
-
+    
 
 
 
@@ -140,6 +144,6 @@ if __name__ == "__main__":
 
     shutdown_threads = False
     
-    ugvgroundvehiclePublisher.run_publisher(
+    man_ctrlPublisher.run_publisher(
             domain_id=0,
             sample_count=sys.maxsize)
