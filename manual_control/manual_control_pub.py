@@ -38,19 +38,19 @@ class ugvgroundvehiclePublisher:
         def timeout_handler(signum, frame):             #on alarm, writes velo and steering angle to publisher
             if lt_val > 1000 and rt_val < 1000: # If the left trigger is pressed, send payload arm commands 
                 arm_cmd = True
-                ugv_manual.arm_cmd[0] += ud_dpad*2 
-                if ugv_manual.arm_cmd[0] < -100:
-                    ugv_manual.arm_cmd[0] = -100
-                elif ugv_manual.arm_cmd[0] > 10:
-                    ugv_manual.arm_cmd[0] = 10
+                ugv_manual.arm_cmd[1] += ud_dpad*2 
+                if ugv_manual.arm_cmd[1] < -100:
+                    ugv_manual.arm_cmd[1] = -100
+                elif ugv_manual.arm_cmd[1] > 10:
+                    ugv_manual.arm_cmd[1] = 10
                 print(f"Up/Down Dpad: {ud_dpad}, L/R Dpad: {lr_dpad}")
             elif rt_val > 1000 and lt_val < 1000: # If the right trigger is pressed, send payload arm commands
                 arm_cmd = True
-                ugv_manual.arm_cmd[1] += ud_dpad*2 
-                if ugv_manual.arm_cmd[1] < 0:
-                    ugv_manual.arm_cmd[1] = 0;
-                elif ugv_manual.arm_cmd[1] > 100:
-                    ugv_manual.arm_cmd[1] = 100;
+                ugv_manual.arm_cmd[0] += ud_dpad*2 
+                if ugv_manual.arm_cmd[0] < 0:
+                    ugv_manual.arm_cmd[0] = 0;
+                elif ugv_manual.arm_cmd[0] > 35:
+                    ugv_manual.arm_cmd[0] = 35;
                 print(f"Up/Down Dpad: {ud_dpad}, L/R Dpad: {lr_dpad}")
 
             else:             #If left trigger is not pressed, send arm commands
