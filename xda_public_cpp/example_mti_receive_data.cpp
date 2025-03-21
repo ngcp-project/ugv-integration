@@ -308,11 +308,8 @@ int main(void)
 					<< ", Yaw:" << euler.yaw();
 				
 				// Roll, pitch, yaw, lat, long, (add more info here)
-				ss << euler.roll() << "," << euler.pitch() << "," << euler.yaw();
-				data_payload = ss.str();	
-				udp_payload  = data_payload.c_str();  //Create C string so that data can be sent over udp  
-
-				ss.str("");  // Reset string stream buffer so that we do not hold old data 
+				//ss << euler.roll() << "," << euler.pitch() << "," << euler.yaw();
+				ss << "Heading: " << euler.yaw();
 			}
 
 			if (packet.containsLatitudeLongitude())
@@ -320,6 +317,7 @@ int main(void)
 				XsVector latLon = packet.latitudeLongitude();
 				cout << " |Lat:" << latLon[0]
 					<< ", Lon:" << latLon[1];
+				ss << ", Lat: " << latLon[0] << ", Lon: " << latLon[1]; 
 			}
 
 			if (packet.containsAltitude())
@@ -335,7 +333,15 @@ int main(void)
 			
 			cout << flush;
 		}
+		
+		cout << "\n";
+		data_payload = ss.str();
 
+		cout << "Data: " << data_payload << "\n";
+		udp_payload  = data_payload.c_str();  //Create C string so that data can be sent over udp  
+
+		ss.str("");  // Reset string stream buffer so that we do not hold old data 
+		
 		// Send information to UDP server application that will process info	
 		sendto(sockfd, (const char *)udp_payload, strlen(udp_payload),
 			0, (const struct sockaddr *)&dest_addr, sizeof(dest_addr));
