@@ -32,7 +32,7 @@ def update_data(i):
     plt.tight_layout()
     plt.plot(longitude,latitude)
 
-anim = FuncAnimation(plt.gcf(), update_data, interval = 1000)
+anim = FuncAnimation(plt.gcf(), update_data, interval = 1000), 
 
 
 plt.show()
