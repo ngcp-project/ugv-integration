@@ -93,7 +93,7 @@ class ugvgroundvehicleSubscriber:
                 # when they activate
                 #print("ugvgroundvehcile subscriber sleeping...")
 
-                waitset.dispatch(dds.Duration(.2))  # Wait up to 1s each time
+                waitset.dispatch(dds.Duration(1))  # Wait up to 1s each time
             except KeyboardInterrupt:
                 break
 
