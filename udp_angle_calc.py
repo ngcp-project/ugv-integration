@@ -8,7 +8,7 @@ heading_pattern = r"Yaw:\s*([-\d\.]+)"
 
 host_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 host_add = "localhost"
-host_port = 22222
+host_port = 20200
 host_sock.bind((host_add, host_port))
 
 ## UDP setup to Tx data to nucelo 
@@ -84,8 +84,11 @@ def main():
     #lon_goal = -117.8210931
     #lat_goal = 34.059333
     #lon_goal = -117.8212890
-    lat_goal = 34.059356
-    lon_goal = -117.8213272
+    #lat_goal = 34.059356
+    #lon_goal = -117.8213272
+    lat_goal = 34.059341
+    lon_goal = -117.8212127
+
     heading_lock = 0
 
     while heading_lock == 0:

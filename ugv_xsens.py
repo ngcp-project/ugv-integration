@@ -43,8 +43,6 @@ class Ugv_Xsens(Node):
             self.client_socket.sendto(yaw_str.encode(), self.server_address)
             print(yaw_str)
 
-        
-
     # def euler_callback(self, euler_msg):
         
     #     self.act_heading = euler_msg.vector.z #Get actual yaw from xsens
