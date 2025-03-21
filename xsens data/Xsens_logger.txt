@@ -1,0 +1,57 @@
+
+Timestamp: 03/02/25, 11:33:26 
+Acceleration Data: X: 0.400, Y: 0.800 Z: 10.200 
+Gyro Data: X: 0.200, Y: 0.400, Z 0.800 
+Orientation: Roll: 5.400, Pitch: 10.800 Yaw: 16.200 
+GPS: Longitude: -122.419, Latitude: 37.7753 
+
+
+Timestamp: 03/02/25, 11:33:27 
+Acceleration Data: X: 0.500, Y: 1.000 Z: 10.300 
+Gyro Data: X: 0.250, Y: 0.500, Z 1.000 
+Orientation: Roll: 5.500, Pitch: 11.000 Yaw: 16.500 
+GPS: Longitude: -122.4189, Latitude: 37.775400000000005 
+
+
+Timestamp: 03/02/25, 11:33:28 
+Acceleration Data: X: 0.600, Y: 1.200 Z: 10.400 
+Gyro Data: X: 0.300, Y: 0.600, Z 1.200 
+Orientation: Roll: 5.600, Pitch: 11.200 Yaw: 16.800 
+GPS: Longitude: -122.41879999999999, Latitude: 37.7755 
+
+
+Timestamp: 03/02/25, 11:33:29 
+Acceleration Data: X: 0.700, Y: 1.400 Z: 10.500 
+Gyro Data: X: 0.350, Y: 0.700, Z 1.400 
+Orientation: Roll: 5.700, Pitch: 11.400 Yaw: 17.100 
+GPS: Longitude: -122.4187, Latitude: 37.775600000000004 
+
+
+Timestamp: 03/02/25, 11:33:30 
+Acceleration Data: X: 0.800, Y: 1.600 Z: 10.600 
+Gyro Data: X: 0.400, Y: 0.800, Z 1.600 
+Orientation: Roll: 5.800, Pitch: 11.600 Yaw: 17.400 
+GPS: Longitude: -122.4186, Latitude: 37.7757 
+
+
+Timestamp: 03/02/25, 11:33:31 
+Acceleration Data: X: 0.900, Y: 1.800 Z: 10.700 
+Gyro Data: X: 0.450, Y: 0.900, Z 1.800 
+Orientation: Roll: 5.900, Pitch: 11.800 Yaw: 17.700 
+GPS: Longitude: -122.4185, Latitude: 37.775800000000004 
+
+
+Timestamp: 03/02/25, 11:33:32 
+Acceleration Data: X: 1.000, Y: 2.000 Z: 10.800 
+Gyro Data: X: 0.500, Y: 1.000, Z 2.000 
+Orientation: Roll: 6.000, Pitch: 12.000 Yaw: 18.000 
+GPS: Longitude: -122.41839999999999, Latitude: 37.7759 
+
+
+Timestamp: 03/02/25, 11:33:33 
+Acceleration Data: X: 1.100, Y: 2.200 Z: 10.900 
+Gyro Data: X: 0.550, Y: 1.100, Z 2.200 
+Orientation: Roll: 6.100, Pitch: 12.200 Yaw: 18.300 
+GPS: Longitude: -122.4183, Latitude: 37.776 
+
+GPS: Longitude: -126.4183, Latitude: 33.3376 

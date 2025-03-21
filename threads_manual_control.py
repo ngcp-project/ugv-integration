@@ -1,12 +1,16 @@
 
 import threading
-from inputs import get_gamepad
+import inputs
 import time
 import time
 import sys
 import rti.connextdds as dds
 from man_ctrl import man_ctrl
+import importlib
 #import signal
+
+
+
 
 def gamepad_manager():
 
@@ -24,7 +28,7 @@ def gamepad_manager():
 
     while not shutdown_threads:
         try:
-            event1 = get_gamepad()
+            event1 = inputs.get_gamepad()
             if event1[0].code == 'ABS_Y':
                 cmdvelo = event1[0].state/(MAX_JOY_VAL)
                 if -15/100 <= cmdvelo and cmdvelo <= 15/100:            #deadzone
@@ -70,7 +74,8 @@ def gamepad_manager():
             lt_val = 0
             ud_dpad = 0
             lr_dpad = 0
-            from inputs import get_gamepad
+
+            
 
 
             time.sleep(.01) #wait before rechecking if gamepad is plugged in
