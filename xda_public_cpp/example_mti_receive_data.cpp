@@ -309,7 +309,7 @@ int main(void)
 				
 				// Roll, pitch, yaw, lat, long, (add more info here)
 				//ss << euler.roll() << "," << euler.pitch() << "," << euler.yaw();
-				ss << "Heading: " << euler.yaw();
+				ss << "Yaw: " << euler.yaw();
 			}
 
 			if (packet.containsLatitudeLongitude())
