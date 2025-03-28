@@ -90,7 +90,7 @@ XML" chapter in the RTI Connext DDS Core Libraries User's Manual.
 				<element>10.110.201.13</element>   <!-- Ip address of ugv raspberry Pi4B on edurom (Subject to change)-->
 				<element>10.110.132.249</element>   <!-- Ip address of ugv raspberry Pi4B on edurom (Subject to change)-->
 				<element>192.168.1.210</element>   <!-- Ip address of ugv raspberry Pi4B on edurom (Subject to change)-->
-				<element>10.110.175.101</element>   <!-- Ip address of chris macbook on edurom-->
+				<element>10.110.170.154</element>   <!-- Ip address of chris macbook on edurom-->
 				<element>192.168.1.36</element>   <!-- Ip address of chris macbook on edurom-->
 			</initial_peers>
 		</discovery>
