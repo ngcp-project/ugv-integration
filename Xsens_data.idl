@@ -15,4 +15,14 @@ struct Xsens_data {
     double latitude;
     double longitude;
     
+
+};
+// data from ugv
+struct ugv_data {
+     
+
+    float goal_heading;
+    float actual_heading;
+    float error_heading;
+
 };

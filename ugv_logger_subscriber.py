@@ -13,8 +13,12 @@ import time
 import sys
 import rti.connextdds as dds
 from Xsens_data import Xsens_data
+from Xsens_data import ugv_data
 from datetime import datetime
-class Xsens_dataSubscriber:
+
+
+# ugv data subscriber
+class UGV_Subscriber:
 
     @staticmethod
     def process_data(reader):
@@ -24,28 +28,38 @@ class Xsens_dataSubscriber:
         samples = reader.take_data()
         
         #make logger for xsens
-        filename = 'Xsens_logger.txt'
+        filename = 'ugv_logger.txt'
         for sample in samples:
             # create human readable time
             timestamp = time.time()
             readable_time = datetime.fromtimestamp(timestamp).strftime('%D, %H:%M:%S')
-            
-            data_string = ( 
-                # MTi related data
-                f"\n"
-                f"Timestamp: {readable_time} \n"
-                f"Acceleration Data: X: {sample.accel_x:.3f}, Y: {sample.accel_y:.3f} Z: {sample.accel_z:.3f} \n"
-                f"Gyro Data: X: {sample.gyro_x:.3f}, Y: {sample.gyro_y:.3f}, Z {sample.gyro_z:.3f} \n"
-                f"Orientation: Roll: {sample.roll:.3f}, Pitch: {sample.pitch:.3f} Yaw: {sample.yaw:.3f} \n"
-                f"GPS: Longitude: {sample.longitude}, Latitude: {sample.latitude} \n"
-                # add UGV data below
+            if isinstance(sample, Xsens_data):
+                data_string = ( 
+                    # MTi related data
+                    f"\n"
+                    f"Timestamp: {readable_time} \n"
+                    f"Acceleration Data: X: {sample.accel_x:.3f}, Y: {sample.accel_y:.3f} Z: {sample.accel_z:.3f} \n"
+                    f"Gyro Data: X: {sample.gyro_x:.3f}, Y: {sample.gyro_y:.3f}, Z {sample.gyro_z:.3f} \n"
+                    f"Orientation: Roll: {sample.roll:.3f}, Pitch: {sample.pitch:.3f} Yaw: {sample.yaw:.3f} \n"
+                    f"GPS: Longitude: {sample.longitude}, Latitude: {sample.latitude} \n"
                 )
+            elif isinstance(sample, ugv_data):
+                        # add UGV data below
+                        data_string = (
+                f"Goal Heading: {sample.goal_heading:.3f} \n"
+                f"Actual Heading: {sample.actual_heading:.3f} \n"
+                f"Error Heading: {sample.error_heading:.3f} \n"
+                )
+            
             print(data_string)
        
-        with open (filename, 'a') as f:
-            f.write(data_string + '\n')
-                    
-            return len(samples)
+            with open (filename, 'a') as f:
+                f.write(data_string + '\n')
+            
+
+        return len(samples)
+
+    
 
     @staticmethod
     def run_subscriber(domain_id: int, sample_count: int):
@@ -54,37 +68,52 @@ class Xsens_dataSubscriber:
         # a DDS domain. Typically there is one DomainParticipant per application.
         # DomainParticipant QoS is configured in USER_QOS_PROFILES.xml
         participant = dds.DomainParticipant(domain_id = 0)
+        #participant.register_type(ugv_data)
 
+    # Create topics
         # A Topic has a name and a datatype.
-        topic = dds.Topic(participant, "Xsens_data", Xsens_data)
+        xsens_topic = dds.Topic(participant, "Xsens_data", Xsens_data)
+        # topic of ugv_data
+        ugv_topic = dds.Topic(participant, "ugv_data", ugv_data)
 
+    # Create data readers
         # This DataReader reads data on Topic "Example Xsens_data".
         # DataReader QoS is configured in USER_QOS_PROFILES.xml
-        reader = dds.DataReader(participant.implicit_subscriber, topic)
+        xsens_reader = dds.DataReader(participant.implicit_subscriber, xsens_topic)
+        ugv_reader = dds.DataReader(participant.implicit_subscriber, ugv_topic)
 
         # Initialize samples_read to zero
         samples_read = 0
+        samples_read1 = 0
 
         # Associate a handler with the status condition. This will run when the
         # condition is triggered, in the context of the dispatch call (see below)
         # condition argument is not used
         def condition_handler(_):
             nonlocal samples_read
-            nonlocal reader
-            samples_read += Xsens_dataSubscriber.process_data(reader)
+            nonlocal samples_read1
+            nonlocal xsens_reader
+            nonlocal ugv_reader
+            # testing
+            samples_read = UGV_Subscriber.process_data(xsens_reader)
+            samples_read1 = UGV_Subscriber.process_data(ugv_reader)
+    
 
         # Obtain the DataReader's Status Condition
-        status_condition = dds.StatusCondition(reader)
+        xsens_condition = dds.StatusCondition(xsens_reader)
+        ugv_condition = dds.StatusCondition(ugv_reader)
 
         # Enable the "data available" status and set the handler.
-        status_condition.enabled_statuses = dds.StatusMask.DATA_AVAILABLE
-        status_condition.set_handler(condition_handler)
+        xsens_condition.enabled_statuses = dds.StatusMask.DATA_AVAILABLE
+        xsens_condition.set_handler(condition_handler)
+
+        ugv_condition.enabled_statuses = dds.StatusMask.DATA_AVAILABLE
+        ugv_condition.set_handler(condition_handler)
 
         # Create a WaitSet and attach the StatusCondition
         waitset = dds.WaitSet()
-        waitset += status_condition
-
-        
+        waitset += xsens_condition
+        waitset += ugv_condition
 
         while samples_read < sample_count:
             # Catch control-C interrupt
@@ -98,6 +127,6 @@ class Xsens_dataSubscriber:
 
 
 if __name__ == "__main__":
-    Xsens_dataSubscriber.run_subscriber(
+    UGV_Subscriber.run_subscriber(
             domain_id=0,
             sample_count=sys.maxsize)

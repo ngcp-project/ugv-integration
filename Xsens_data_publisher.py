@@ -8,12 +8,12 @@
 # obligation to maintain or support the software. RTI shall not be liable for
 # any incidental or consequential damages arising out of the use or inability
 # to use the software.
-
 import time
 import sys
 import rti.connextdds as dds
 from datetime import datetime
 from Xsens_data import Xsens_data
+from Xsens_data import ugv_data
 
 class Xsens_dataPublisher:
 
@@ -27,13 +27,17 @@ class Xsens_dataPublisher:
 
         # A Topic has a name and a datatype.
         topic = dds.Topic(participant, "Xsens_data", Xsens_data)
-
+        topic1 = dds.Topic(participant, "ugv_data", ugv_data)
         # This DataWriter will write data on Topic "Example Xsens_data"
         # DataWriter QoS is configured in USER_QOS_PROFILES.xml
         writer = dds.DataWriter(participant.implicit_publisher, topic)
+        writer1 = dds.DataWriter(participant.implicit_publisher, topic1)
+
+
         # this would sample from xsens driver
-        sample = Xsens_data()        
-        
+        sample = Xsens_data()
+        # data from ugv_data class        
+        sample1 = ugv_data()
        
         #while True: 
         for count in range(sample_count):
@@ -57,15 +61,24 @@ class Xsens_dataPublisher:
                     sample.latitude = 37.7749 + (0.0001 * count)  # Simulate GPS data
                     sample.longitude = -122.4194 + (0.0001 * count)
 
-
-
+                    '''UGV sample data'''
+                    sample1.goal_heading= 15.01 + count
+                    sample1.actual_heading = 16.01 + count
+                    sample1.error_heading = 17.01 + count
+                    
                     # Modify the data to be sent here
                     # replace example data with MTi data
                     print(f"Timestamp: {readable_time} \n",
                         f"Acceleration Data: X: {sample.accel_x:.3f}, Y: {sample.accel_y:.3f} Z: {sample.accel_z:.3f} \n",
                         f"Gyro Data: X: {sample.gyro_x:.3f}, Y: {sample.gyro_y:.3f}, Z {sample.gyro_z:.3f} \n",
                         f"Orientation: Roll: {sample.roll:.3f}, Pitch: {sample.pitch:.3f} Yaw: {sample.yaw:.3f} \n",
-                        f"GPS: Longitude: {sample.longitude}, Latitude: {sample.latitude} \n")
+                        f"GPS: Longitude: {sample.longitude}, Latitude: {sample.latitude} \n"
+                        #ugv data
+                        f"Goal Heading: {sample1.goal_heading:.3f} \n"
+                        f"Actual Heading: {sample1.actual_heading:.3f} \n"
+                        f"Error Heading: {sample1.error_heading:.3f} \n"
+                        )
+                    writer1.write(sample1)
                     writer.write(sample)
                     # change time to determine how fast data is published
                     time.sleep(1)

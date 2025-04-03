@@ -29,3 +29,9 @@ class Xsens_data:
     yaw: idl.float32 = 0.0
     latitude: float = 0.0
     longitude: float = 0.0
+
+@idl.struct
+class ugv_data:
+    goal_heading: idl.float32 = 0.0
+    actual_heading: idl.float32 = 0.0
+    error_heading: idl.float32 = 0.0
