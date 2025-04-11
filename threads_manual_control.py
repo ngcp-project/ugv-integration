@@ -105,7 +105,7 @@ class man_ctrlPublisher:
         
         global shutdown_threads
 
-        gamepad_manager_thread = threading.Thread(target=gamepad_manager,args=())
+        gamepad_manager_thread = threading.Thread(target=gamepad_manager,args=(), daemon =True)
         gamepad_manager_thread.start()
 
 
@@ -136,7 +136,7 @@ class man_ctrlPublisher:
                             
 
                 writer.write(ugv_manual)
-                time.sleep(.2) # delay between writes
+                time.sleep(.05) # delay between writes
 
             except KeyboardInterrupt:
                 print("Loop interrupted by user")

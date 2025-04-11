@@ -36,7 +36,7 @@ class man_ctrlSubscriber:
         participant = dds.DomainParticipant(domain_id)
 
         # A Topic has a name and a datatype.
-        topic = dds.Topic(participant, "Example man_ctrl", man_ctrl)
+        topic = dds.Topic(participant, "man_ctrl", man_ctrl)
 
         # This DataReader reads data on Topic "Example man_ctrl".
         # DataReader QoS is configured in USER_QOS_PROFILES.xml
@@ -51,7 +51,17 @@ class man_ctrlSubscriber:
         def condition_handler(_):
             nonlocal samples_read
             nonlocal reader
-            samples_read += man_ctrlSubscriber.process_data(reader)
+            samples = reader.take_data()
+            
+            #Check if samples is an empty list (indicating that controller is disconnected)
+            if(len(samples) != 0): 
+                udp_payload = f"{samples[0].linear_vel}, {samples[0].steer_cmd}, {samples[0].arm_cmd[0]}, {samples[0].arm_cmd[1]}".encode()
+                
+                print(f"{samples[0].linear_vel}, {samples[0].steer_cmd}, Elbow:{samples[0].arm_cmd[0]}, Shoulder: {samples[0].arm_cmd[1]})")
+                #time.sleep(.010) #10ms
+                samples_read += man_ctrlSubscriber.process_data(reader)
+            else:
+                print("Data buffer is an empty list")
 
         # Obtain the DataReader's Status Condition
         status_condition = dds.StatusCondition(reader)
