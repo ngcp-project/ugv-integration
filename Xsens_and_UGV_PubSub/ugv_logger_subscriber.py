@@ -70,7 +70,7 @@ class UGV_Subscriber:
         # A Topic has a name and a datatype.
         xsens_topic = dds.Topic(participant, "Xsens_data", Xsens_data)
         # topic of ugv_data
-        ugv_topic = dds.Topic(participant, "ugv_data", ugv_data)
+        ugv_topic = dds.Topic(participant, "ugv_heading_data", ugv_heading_data)
 
     # Create data readers
         # This DataReader reads data on Topic "Example Xsens_data".

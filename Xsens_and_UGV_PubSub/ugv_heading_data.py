@@ -27,7 +27,7 @@ class Xsens_dataPublisher:
         # A DomainParticipant allows an application to begin communicating in
         # a DDS domain. Typically there is one DomainParticipant per application.
         # DomainParticipant QoS is configured in USER_QOS_PROFILES.xml
-        participant = dds.DomainParticipant(domain_id = 1)
+        participant = dds.DomainParticipant(domain_id = 0)
 
         # A Topic has a name and a datatype.
         topic = dds.Topic(participant, "ugv_heading_data", ugv_heading_data)
@@ -106,6 +106,6 @@ class Xsens_dataPublisher:
 
 if __name__ == "__main__":
     Xsens_dataPublisher.run_publisher(
-            domain_id=1,
+            domain_id=0,
             sample_count=sys.maxsize)
 
