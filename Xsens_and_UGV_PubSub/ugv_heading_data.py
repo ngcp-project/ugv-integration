@@ -80,8 +80,8 @@ class Xsens_dataPublisher:
                     heading_error = goal_heading - actual_heading
                     heading_error = heading_error/100
                     heading_error = round(heading_error, 3) #Three 3 places of precisions 
-                    udp_payload = f"{linear_vel}, {steer_val}, {heading_error}".encode()
-                    server_socket.sendto(udp_payload, (drive_nucelo_ip, drive_nucelo_port))
+                    #udp_payload = f"{linear_vel}, {steer_val}, {heading_error}".encode()
+                    #server_socket.sendto(udp_payload, (drive_nucelo_ip, drive_nucelo_port))
                     #self.host_sock.sendto(payload, (self.client_add, self.client_port)) 
                     #goal heading
                     #sample.goal_heading = goal_heading
