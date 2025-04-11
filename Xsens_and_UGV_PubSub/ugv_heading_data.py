@@ -17,7 +17,7 @@ import re
 import time
 
 import rti.connextdds as dds
-from ugv_heading_data import ugv_heading_data
+from ugv_data import ugv_heading_data
 
 class Xsens_dataPublisher:
 
@@ -51,12 +51,12 @@ class Xsens_dataPublisher:
         server_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
         # Bind the server to an IP and port (localhost and port 12345 in this case)
-        server_address = ('192.168.20.5', 12345)  # Replace with your server's IP
-        server_socket.bind(server_address)
+        # server_address = ('192.168.20.5', 12345)  # Replace with your server's IP
+        # server_socket.bind(server_address)
 
         # Define the known client IP and port
-        drive_nucelo_ip = '192.168.20.21'
-        drive_nucelo_port = 8   
+        # drive_nucelo_ip = '192.168.20.21'
+        # drive_nucelo_port = 8   
 
         linear_vel = -0.70  # Set a constant velocity for autonomy
         steer_val = 0 # Does not matter what value is, Just need it send that data order in udp payload is maintained
@@ -90,11 +90,12 @@ class Xsens_dataPublisher:
                     
                     time.sleep(.010)
                     print(f"Goal Heading: {goal_heading}, Actual Heading: {actual_heading}, Error: {heading_error * 100}")
+            
+                    writer.write(sample)               
                 else:
                     print("Could not find Yaw string")
         
 
-                    writer.write(sample)
                     # change time to determine how fast data is published
                     time.sleep(1)
             except KeyboardInterrupt:
