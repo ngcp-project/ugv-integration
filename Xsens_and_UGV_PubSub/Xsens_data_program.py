@@ -13,8 +13,8 @@ import argparse
 import sys
 from dataclasses import dataclass
 
-from Xsens_data_publisher import ugv_dataPublisher
-from Xsens_data_subscriber import ugv_dataSubscriber
+from Xsens_data_publisher import Xsens_dataPublisher
+from ugv_logger_subscriber import UGV_Subscriber
 
 @dataclass
 class ApplicationArguments:
@@ -28,13 +28,13 @@ def main():
     args: ApplicationArguments = parse_arguments()
 
     if args.pub:
-        print(f"Running ugv_dataPublisher on domain {args.domain}")
-        ugv_dataPublisher.run_publisher(
+        print(f"Running Xsens_dataPublisher on domain {args.domain}")
+        Xsens_dataPublisher.run_publisher(
             domain_id=args.domain,
             sample_count=args.sample_count)
     else:
-        print(f"Running ugv_dataSubscriber on domain {args.domain}")
-        ugv_dataSubscriber.run_subscriber(
+        print(f"Running UGV_Subscriber on domain {args.domain}")
+        UGV_Subscriber.run_subscriber(
             domain_id=args.domain,
             sample_count=args.sample_count)
 
