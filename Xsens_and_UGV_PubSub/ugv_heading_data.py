@@ -87,7 +87,7 @@ class Xsens_dataPublisher:
                     #sample.goal_heading = goal_heading
                     sample.actual_heading = actual_heading
                     sample.heading_error = heading_error
-                    
+                    sample.goal_heading = goal_heading
                     time.sleep(.010)
                     print(f"Goal Heading: {goal_heading}, Actual Heading: {actual_heading}, Error: {heading_error * 100}")
             
