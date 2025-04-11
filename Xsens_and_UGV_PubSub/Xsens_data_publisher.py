@@ -12,8 +12,8 @@ import time
 import sys
 import rti.connextdds as dds
 from datetime import datetime
-from Xsens_data import Xsens_data
-from Xsens_data import ugv_data
+from ugv_data import Xsens_data
+from ugv_data import ugv_heading_data
 
 class Xsens_dataPublisher:
 
@@ -27,7 +27,7 @@ class Xsens_dataPublisher:
 
         # A Topic has a name and a datatype.
         topic = dds.Topic(participant, "Xsens_data", Xsens_data)
-        topic1 = dds.Topic(participant, "ugv_data", ugv_data)
+        topic1 = dds.Topic(participant, "ugv_heading_data", ugv_heading_data)
         # This DataWriter will write data on Topic "Example Xsens_data"
         # DataWriter QoS is configured in USER_QOS_PROFILES.xml
         writer = dds.DataWriter(participant.implicit_publisher, topic)
@@ -36,8 +36,8 @@ class Xsens_dataPublisher:
 
         # this would sample from xsens driver
         sample = Xsens_data()
-        # data from ugv_data class        
-        sample1 = ugv_data()
+        # data from ugv_heading_data class        
+        sample1 = ugv_heading_data()
        
         #while True: 
         for count in range(sample_count):
@@ -64,7 +64,7 @@ class Xsens_dataPublisher:
                     '''UGV sample data'''
                     sample1.goal_heading= 15.01 + count
                     sample1.actual_heading = 16.01 + count
-                    sample1.error_heading = 17.01 + count
+                    sample1.heading_error = 17.01 + count
                     
                     # Modify the data to be sent here
                     # replace example data with MTi data
@@ -76,7 +76,7 @@ class Xsens_dataPublisher:
                         #ugv data
                         f"Goal Heading: {sample1.goal_heading:.3f} \n"
                         f"Actual Heading: {sample1.actual_heading:.3f} \n"
-                        f"Error Heading: {sample1.error_heading:.3f} \n"
+                        f"Error Heading: {sample1.heading_error:.3f} \n"
                         )
                     writer1.write(sample1)
                     writer.write(sample)

@@ -12,8 +12,8 @@
 import time
 import sys
 import rti.connextdds as dds
-from Xsens_data import Xsens_data
-from Xsens_data import ugv_data
+from ugv_data import Xsens_data
+from ugv_data import ugv_heading_data
 from datetime import datetime
 
 # ugv data subscriber
@@ -42,12 +42,12 @@ class UGV_Subscriber:
                     f"Orientation: Roll: {sample.roll:.3f}, Pitch: {sample.pitch:.3f} Yaw: {sample.yaw:.3f} \n"
                     f"GPS: Longitude: {sample.longitude}, Latitude: {sample.latitude} \n"
                 )
-            elif isinstance(sample, ugv_data):
+            elif isinstance(sample, ugv_heading_data):
                         # add UGV data below
                         data_string = (
                 f"Goal Heading: {sample.goal_heading:.3f} \n"
                 f"Actual Heading: {sample.actual_heading:.3f} \n"
-                f"Error Heading: {sample.error_heading:.3f} \n"
+                f"Error Heading: {sample.heading_error:.3f} \n"
                 )
             
             print(data_string)
