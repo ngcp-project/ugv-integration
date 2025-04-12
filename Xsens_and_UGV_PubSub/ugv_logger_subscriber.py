@@ -32,6 +32,22 @@ class UGV_Subscriber:
             # create human readable time
             timestamp = time.time()
             readable_time = datetime.fromtimestamp(timestamp).strftime('%D, %H:%M:%S')
+                
+            ''' PSEUDO DATA'''
+            count = 0.5
+            accel_x = 0.1 * count  # Simulate changing acceleration data
+            accel_y = 0.2 * count
+            accel_z = 9.8 + (0.1 * count)  # Simulate gravity-based value
+            gyro_x = 0.05 * count  # Simulate gyro data
+            gyro_y = 0.1 * count
+            gyro_z = 0.2 * count
+            roll = 5.0 + (0.1 * count)  # Simulate orientation data
+            pitch = 10.0 + (0.2 * count)
+            yaw = 15.0 + (0.3 * count)
+            latitude = 37.7749 + (0.0001 * count)  # Simulate GPS data
+            longitude = -122.4194 + (0.0001 * count)
+            
+            
             if isinstance(sample, Xsens_data):
                 data_string = ( 
                     # MTi related data
