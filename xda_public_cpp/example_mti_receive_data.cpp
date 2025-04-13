@@ -127,32 +127,11 @@ int main(void)
         exit(EXIT_FAILURE);
     }
 
-    // memset(&dest_addr, 0, sizeof(dest_addr));
-
-	// //Bind client socket client to server application @ localhost:4040
-	// client_addr.sin_family = AF_INET;
-	// client_addr.sin_port = htons(CLIENT_PORT);
-	// client_addr.sin_addr.s_addr = inet_addr("127.0.0.1");
-
-	// if (bind(sockfd, (struct sockaddr*)&client_addr, sizeof(client_addr)) < 0) {
-	// 	perror("Bind failed");
-	// 	close(sockfd);
-	// 	exit(EXIT_FAILURE);
-    // }
-
-
     //Filling Server Info 
     dest_addr.sin_family = AF_INET; //IPv4
     dest_addr.sin_addr.s_addr = INADDR_ANY;
     dest_addr.sin_port = htons(SERVER_PORT);
     inet_pton(AF_INET, "127.0.0.1", &dest_addr.sin_addr);  // Set IP to localhost
-
-    //Bind the Socket with the destination address 
-    // if ( bind(sockfd, (const struct sockaddr *)&dest_addr, sizeof(dest_addr)) < 0)
-    // {
-    //     perror("bind failed");
-    //     exit(EXIT_FAILURE);
-    // }
 
     socklen_t len;
 	string data_payload; //Contain the udp data sent to external application
@@ -338,7 +317,8 @@ int main(void)
 		data_payload = ss.str();
 
 		cout << "Data: " << data_payload << "\n";
-		udp_payload  = data_payload.c_str();  //Create C string so that data can be sent over udp  
+		udp_payload  = data_payload.c_str();  //Create C string so that data can be sent over udp 
+		cout << ss.str(); 
 
 		ss.str("");  // Reset string stream buffer so that we do not hold old data 
 		
