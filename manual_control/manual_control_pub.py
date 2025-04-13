@@ -48,7 +48,7 @@ class ugvgroundvehiclePublisher:
                 arm_cmd = True
                 ugv_manual.arm_cmd[0] += ud_dpad*2 
                 if ugv_manual.arm_cmd[0] < 0:
-                    ugv_manual.arm_cmd[0] = 0;
+                    ugv_manual.arm_cmd[0] = 0
                 elif ugv_manual.arm_cmd[0] > 35:
                     ugv_manual.arm_cmd[0] = 35;
                 print(f"Up/Down Dpad: {ud_dpad}, L/R Dpad: {lr_dpad}")
@@ -91,7 +91,6 @@ class ugvgroundvehiclePublisher:
                         cmdangle = 1.0
 
                 ## Commands for payload arm actuation
-
                 if event1[0].code == "ABS_Z":
                     lt_val = event1[0].state 
 
@@ -115,7 +114,6 @@ class ugvgroundvehiclePublisher:
             except KeyboardInterrupt:
                 break
         print("Preparing to shut down...")
-
 
 if __name__ == "__main__":
     ugvgroundvehiclePublisher.run_publisher(

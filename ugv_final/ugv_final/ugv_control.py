@@ -54,9 +54,11 @@ class UgvControlPub:
             ## Need to latch the autonomous mode enable to one state 
             if l_bumper == 1 and r_bumper == 1: # Enable Autonomous 
                  man_obj.auto_en = not man_obj.auto_en # Toggle Autonomous Boolean
+                 auto_obj.auto_en = not auto_obj.auto_en # Toggle Autonomous Boolean
             if man_obj.auto_en == True:
                 print("Autonomous Mode Enabled")
                 man_writer.write(man_obj) #Publish man_obj data values 
+                auto_writer.write(auto_obj) # Publish Autonomous data values 
                 signal.setitimer(signal.ITIMER_REAL, 0.02)
             else:
                 if lt_val > 1000 and rt_val < 1000: # If the left trigger is pressed, send payload arm commands 
