@@ -1,0 +1,26 @@
+
+//Structure For autonomous Nav
+struct auto_ctrl
+{
+    boolean auto_en; //Enable Autonomous Nav
+    float heading_error; //Heading error for heading controller 
+    float object_distance[5]; //Contains 5 distance measurements from depth camera 
+    boolean obstacle_flag; //Asserted when depth measurements are below distance threshold 
+    float latitude;  // GPS Latitude 
+    float longitude; // GPS Longitude 
+};
+
+// Structure for manual control 
+struct man_ctrl 
+{
+    float linear_vel; // Linear Velocity
+    float steer_cmd;  // Servo Steering Angle 
+    float arm_cmd[5]; // Command for payload mechanism 
+    boolean auto_en; // Enable Autonomous Nav 
+};
+
+struct logger
+{
+    float gps_pos[2]; // Gps position two floats wide for lat and long 
+    float battery_life; //Battery Life coming from digital hardware board
+};
