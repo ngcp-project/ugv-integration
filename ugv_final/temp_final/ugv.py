@@ -37,7 +37,7 @@ class man_ctrl:
     linear_vel: idl.float32 = 0.0
     steer_cmd: idl.float32 = 0.0
     arm_cmd: Sequence[idl.float32] = field(default_factory = idl.array_factory(idl.float32, [5]))
-    auto_en: bool = False
+    auton_enable: bool = False
 
 @idl.struct(
     member_annotations = {

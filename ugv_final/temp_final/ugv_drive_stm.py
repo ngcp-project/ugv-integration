@@ -14,17 +14,24 @@ import sys
 import rti.connextdds as dds
 from ugv import man_ctrl
 
-class loggerSubscriber:
+import socket
+
+class UgvControlSub:
 
     @staticmethod
-    def process_data(reader):
+    def process_data(reader, drive_udp_socket):
         # take_data() returns copies of all the data samples in the reader
         # and removes them. To also take the SampleInfo meta-data, use take().
         # To not remove the data from the reader, use read_data() or read().
         samples = reader.take_data()
-        for sample in samples:
-            print(f"Received: {sample}")
-    
+       
+        #for sample in samples:
+        #Check if samples is an empty list (indicating that controller is disconnected)
+        if(len(samples) != None): 
+            udp_payload = f"{samples[0].linear_vel}, {samples[0].steer_cmd}, {samples[0].arm_cmd[0]}, {samples[0].arm_cmd[1]}".encode()
+            drive_udp_socket.sendto(udp_payload, (client_ip, client_port))
+            print(f"{samples[0].linear_vel}, {samples[0].steer_cmd}, Elbow:{samples[0].arm_cmd[0]}, Shoulder: {samples[0].arm_cmd[1]})")
+            #print(f"Received: {sample}")
         return len(samples)
 
     @staticmethod
@@ -41,6 +48,17 @@ class loggerSubscriber:
         # This DataReader reads data on Topic "Example logger".
         # DataReader QoS is configured in USER_QOS_PROFILES.xml
         reader = dds.DataReader(participant.implicit_subscriber, man_topic)
+        
+        # Set up the UDP server
+        server_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+
+        # Bind the server to an IP and port (localhost and port 12345 in this case)
+        server_address = ('192.168.20.5', 12345)  # Replace with your server's IP
+        server_socket.bind(server_address)
+
+        # Define the known client IP and port
+        client_ip = '192.168.20.21'
+        client_port = 8   
 
         # Initialize samples_read to zero
         samples_read = 0
@@ -51,7 +69,7 @@ class loggerSubscriber:
         def condition_handler(_):
             nonlocal samples_read
             nonlocal reader
-            samples_read += loggerSubscriber.process_data(reader)
+            samples_read += UgvControlSub.process_data(reader, server.socket)
 
         # Obtain the DataReader's Status Condition
         status_condition = dds.StatusCondition(reader)
@@ -69,7 +87,6 @@ class loggerSubscriber:
             try:
                 # Dispatch will call the handlers associated to the WaitSet conditions
                 # when they activate
-                print("Hello World subscriber sleeping for 1 seconds...")
 
                 waitset.dispatch(dds.Duration(1))  # Wait up to 1s each time
             except KeyboardInterrupt:
@@ -79,6 +96,6 @@ class loggerSubscriber:
 
 
 if __name__ == "__main__":
-    loggerSubscriber.run_subscriber(
+    UgvControlSub.run_subscriber(
             domain_id=0,
             sample_count=sys.maxsize)

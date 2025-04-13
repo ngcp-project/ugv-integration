@@ -24,7 +24,7 @@ UPPER_ELBOW_SERV_LIM = 10
 DEAD_ZONE_THRESH = 15/100
 UPPER_STEER_CMD_LIMIT = 1.0 
 
-class UgvControlPub:
+class loggerPublisher:
 
     @staticmethod
     def run_publisher(domain_id: int, sample_count: int):
@@ -51,13 +51,10 @@ class UgvControlPub:
         auto_obj = auto_ctrl()     
 
         def timeout_handler(signum, frame):
-            ## Need to latch the autonomous mode enable to one state 
-            if l_bumper == 1 and r_bumper == 1: # Enable Autonomous 
-                 man_obj.auto_en = not man_obj.auto_en # Toggle Autonomous Boolean
-            if man_obj.auto_en == True:
+            # if l_bumper == 1 and r_bumper == 1: # Enable Autonomous 
+            #     man_obj.auto_en = True # Toggle Autonomous Boolean
+            if man_obj.linear_vel:
                 print("Autonomous Mode Enabled")
-                man_writer.write(man_obj) #Publish man_obj data values 
-                signal.setitimer(signal.ITIMER_REAL, 0.02)
             else:
                 if lt_val > 1000 and rt_val < 1000: # If the left trigger is pressed, send payload arm commands 
                     arm_cmd = True
@@ -89,7 +86,6 @@ class UgvControlPub:
         rt_val = 0
         ud_dpad = 0
         lr_dpad = 0
-        a_btn = 0
 
         signal.signal(signal.SIGALRM, timeout_handler)  #Routes alarm to timeout handler
         signal.setitimer(signal.ITIMER_REAL, 0.02)      #timer delay in seconds, float
@@ -132,10 +128,6 @@ class UgvControlPub:
                    l_bumper = event1[0].state
                    print("Left bumper action")
 
-                # if l_bumper == 1 and r_bumper == 1:
-                #     if event1[0].code == "BTN_SOUTH"
-                        
-
             except KeyboardInterrupt:
                 break
 
@@ -143,6 +135,6 @@ class UgvControlPub:
 
 
 if __name__ == "__main__":
-    UgvControlPub.run_publisher(
+    loggerPublisher.run_publisher(
             domain_id=0,
             sample_count=sys.maxsize)

@@ -12,7 +12,7 @@
 import time
 import sys
 import rti.connextdds as dds
-from ugv import man_ctrl
+from ugv import logger
 
 class loggerSubscriber:
 
@@ -36,11 +36,11 @@ class loggerSubscriber:
         participant = dds.DomainParticipant(domain_id)
 
         # A Topic has a name and a datatype.
-        man_topic = dds.Topic(participant, "man_ctrl", man_ctrl)
+        topic = dds.Topic(participant, "Example logger", logger)
 
         # This DataReader reads data on Topic "Example logger".
         # DataReader QoS is configured in USER_QOS_PROFILES.xml
-        reader = dds.DataReader(participant.implicit_subscriber, man_topic)
+        reader = dds.DataReader(participant.implicit_subscriber, topic)
 
         # Initialize samples_read to zero
         samples_read = 0

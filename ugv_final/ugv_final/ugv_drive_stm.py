@@ -16,22 +16,45 @@ from ugv import man_ctrl
 
 import socket
 
+# Set up the UDP server
+server_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+
+# Bind the server to an IP and port (localhost and port 12345 in this case)
+server_address = ('192.168.20.5', 12345)  # Replace with your server's IP
+server_socket.bind(server_address)
+
+# Define the known client IP and port
+client_ip = '192.168.20.21'
+client_port = 8   
+
 class UgvControlSub:
 
     @staticmethod
-    def process_data(reader, drive_udp_socket):
+    def process_data(reader):
         # take_data() returns copies of all the data samples in the reader
         # and removes them. To also take the SampleInfo meta-data, use take().
         # To not remove the data from the reader, use read_data() or read().
         samples = reader.take_data()
-       
-        #for sample in samples:
         #Check if samples is an empty list (indicating that controller is disconnected)
-        if(len(samples) != None): 
-            udp_payload = f"{samples[0].linear_vel}, {samples[0].steer_cmd}, {samples[0].arm_cmd[0]}, {samples[0].arm_cmd[1]}".encode()
-            drive_udp_socket.sendto(udp_payload, (client_ip, client_port))
-            print(f"{samples[0].linear_vel}, {samples[0].steer_cmd}, Elbow:{samples[0].arm_cmd[0]}, Shoulder: {samples[0].arm_cmd[1]})")
-            #print(f"Received: {sample}")
+        if samples[0].auto_en == True:
+            print("Autonomous Enabled")
+            AUTO_VEL = 0.5
+            STEER_CMD = 0
+            auto_flag = float(samples[0].auto_en)  # Convert boolean flag to float so that it can be properly decoded on the nucleo side
+            udp_payload = f"{AUTO_VEL}, {STEER_CMD}, {auto_flag}".encode()
+            server_socket.sendto(udp_payload, (client_ip, client_port))
+            print(f"Const Vel: {AUTO_VEL}, Const Steer: {STEER_CMD}, Autonomous Flag: {auto_flag}")
+        else:
+            if(len(samples) != None): 
+                linear_vel = round(samples[0].linear_vel, 2)
+                steer_cmd = round(samples[0].steer_cmd, 2)
+                udp_payload = f"{linear_vel}, {steer_cmd}, {samples[0].arm_cmd[0]}, {samples[0].arm_cmd[1]}".encode()
+                print(len(udp_payload.decode()))
+                server_socket.sendto(udp_payload, (client_ip, client_port))
+                print(f"{linear_vel}, {steer_cmd}, Elbow:{samples[0].arm_cmd[0]}, Shoulder: {samples[0].arm_cmd[1]})")
+       
+        # for sample in samples:
+        #     print(f"Received: {sample}")
         return len(samples)
 
     @staticmethod
@@ -48,17 +71,6 @@ class UgvControlSub:
         # This DataReader reads data on Topic "Example logger".
         # DataReader QoS is configured in USER_QOS_PROFILES.xml
         reader = dds.DataReader(participant.implicit_subscriber, man_topic)
-        
-        # Set up the UDP server
-        server_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-
-        # Bind the server to an IP and port (localhost and port 12345 in this case)
-        server_address = ('192.168.20.5', 12345)  # Replace with your server's IP
-        server_socket.bind(server_address)
-
-        # Define the known client IP and port
-        client_ip = '192.168.20.21'
-        client_port = 8   
 
         # Initialize samples_read to zero
         samples_read = 0
@@ -69,7 +81,7 @@ class UgvControlSub:
         def condition_handler(_):
             nonlocal samples_read
             nonlocal reader
-            samples_read += UgvControlSub.process_data(reader, server.socket)
+            samples_read += UgvControlSub.process_data(reader)
 
         # Obtain the DataReader's Status Condition
         status_condition = dds.StatusCondition(reader)
