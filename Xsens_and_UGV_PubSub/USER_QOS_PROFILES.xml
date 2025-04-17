@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- 
 Description
-XML QoS Profile for Xsens_data
+XML QoS Profile for ugv_data
 
 (c) Copyright, Real-Time Innovations, 2012.  All rights reserved.
 RTI grants Licensee a license to use, modify, compile, and create derivative
@@ -54,25 +54,25 @@ XML" chapter in the RTI Connext DDS Core Libraries User's Manual.
 
         A QoS library is a named set of QoS profiles.
     -->
-    <qos_library name="Xsens_data_Library">
+    <qos_library name="ugv_data_Library">
 
         <!-- QoS profile used to configure reliable communication between the DataWriter 
              and DataReader created in the example code.
 
              A QoS profile groups a set of related QoS.
         -->
-        <qos_profile name="Xsens_data_Profile" base_name="BuiltinQosLib::Generic.StrictReliable" is_default_qos="true">
+        <qos_profile name="ugv_data_Profile" base_name="BuiltinQosLib::Generic.StrictReliable" is_default_qos="true">
             <!-- QoS used to configure the data writer created in the example code -->                
             <datawriter_qos>
                 <publication_name>
-                    <name>Xsens_dataDataWriter</name>
+                    <name>ugv_dataDataWriter</name>
                 </publication_name>
             </datawriter_qos>
 
             <!-- QoS used to configure the data reader created in the example code -->                
             <datareader_qos>
                 <subscription_name>
-                    <name>Xsens_dataDataReader</name>
+                    <name>ugv_dataDataReader</name>
                 </subscription_name>
             </datareader_qos>
             <domain_participant_qos>
@@ -82,10 +82,9 @@ XML" chapter in the RTI Connext DDS Core Libraries User's Manual.
                 application from another when you're debugging.
                 -->
                 <participant_name>
-                    <name>Xsens_dataParticipant</name>
-                    <role_name>Xsens_dataParticipantRole</role_name>
+                    <name>ugv_dataParticipant</name>
+                    <role_name>ugv_dataParticipantRole</role_name>
                 </participant_name>
-
             </domain_participant_qos>
         </qos_profile>
 

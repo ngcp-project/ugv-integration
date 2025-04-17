@@ -16,6 +16,7 @@ from dataclasses import dataclass
 from Xsens_data_publisher import Xsens_dataPublisher
 from ugv_logger_subscriber import UGV_Subscriber
 
+
 @dataclass
 class ApplicationArguments:
     pub: bool
