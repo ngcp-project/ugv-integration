@@ -85,6 +85,12 @@ XML" chapter in the RTI Connext DDS Core Libraries User's Manual.
                     <name>ugvParticipant</name>
                     <role_name>ugvParticipantRole</role_name>
                 </participant_name>
+                <discovery>
+                    <initial_peers>
+                        <element>10.110.147.99</element> <!-- IP adress of jetson orin nano -->
+                        <element>10.110.192.242</element> <!-- IP adress of jetson orin nano -->
+                    </initial_peers>
+                </discovery>
 
             </domain_participant_qos>
         </qos_profile>
