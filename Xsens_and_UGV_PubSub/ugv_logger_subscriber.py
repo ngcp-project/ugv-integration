@@ -12,8 +12,9 @@
 import time
 import sys
 import rti.connextdds as dds
-from ugv_data import Xsens_data
-from ugv_data import ugv_heading_data
+# from ugv_data import Xsens_data
+# from ugv_data import ugv_heading_data
+from ugv import auto_ctrl
 from datetime import datetime
 
 # ugv data subscriber
@@ -32,24 +33,12 @@ class UGV_Subscriber:
             # create human readable time
             timestamp = time.time()
             readable_time = datetime.fromtimestamp(timestamp).strftime('%D, %H:%M:%S')
-                
-            ''' PSEUDO DATA'''
-            count = 0.5
-            accel_x = 0.1 * count  # Simulate changing acceleration data
-            accel_y = 0.2 * count
-            accel_z = 9.8 + (0.1 * count)  # Simulate gravity-based value
-            gyro_x = 0.05 * count  # Simulate gyro data
-            gyro_y = 0.1 * count
-            gyro_z = 0.2 * count
-            roll = 5.0 + (0.1 * count)  # Simulate orientation data
-            pitch = 10.0 + (0.2 * count)
-            yaw = 15.0 + (0.3 * count)
-            latitude = 37.7749 + (0.0001 * count)  # Simulate GPS data
-            longitude = -122.4194 + (0.0001 * count)
-            
-            
-            if isinstance(sample, Xsens_data):
+
+
+
+            if isinstance(sample, auto_ctrl):
                 data_string = ( 
+                        '''
                     # MTi related data
                     f"\n"
                     f"Timestamp: {readable_time} \n"
@@ -61,13 +50,14 @@ class UGV_Subscriber:
             elif isinstance(sample, ugv_heading_data):
                         # add UGV data below
                         data_string = (
-                f"Goal Heading: {sample.goal_heading:.3f} \n"
-                f"Actual Heading: {sample.actual_heading:.3f} \n"
-                f"Error Heading: {sample.heading_error:.3f} \n"
+                    '''
+                #f"Goal Heading: {sample.goal_heading:.3f} \n"
+                #f"Actual Heading: {sample.actual_heading:.3f} \n"
+                    f"Error Heading: {sample.heading_error:.3f} \n"
                 )
             
             print(data_string)
-       
+        
             with open (filename, 'a') as f:
                 f.write(data_string + '\n')
                         
@@ -84,50 +74,55 @@ class UGV_Subscriber:
 
     # Create topics
         # A Topic has a name and a datatype.
+        '''
         xsens_topic = dds.Topic(participant, "Xsens_data", Xsens_data)
         # topic of ugv_data
-        ugv_topic = dds.Topic(participant, "ugv_heading_data", ugv_heading_data)
+        '''
+
+        ugv_topic = dds.Topic(participant, "auto_ctrl", auto_ctrl)
 
     # Create data readers
         # This DataReader reads data on Topic "Example Xsens_data".
         # DataReader QoS is configured in USER_QOS_PROFILES.xml
-        xsens_reader = dds.DataReader(participant.implicit_subscriber, xsens_topic)
+        #xsens_reader = dds.DataReader(participant.implicit_subscriber, xsens_topic)
         ugv_reader = dds.DataReader(participant.implicit_subscriber, ugv_topic)
 
         # Initialize samples_read to zero
-        samples_read = 0
+        #samples_read = 0
         samples_read1 = 0
 
         # Associate a handler with the status condition. This will run when the
         # condition is triggered, in the context of the dispatch call (see below)
         # condition argument is not used
-        def condition_handler(_):
-            nonlocal samples_read
+        def condition_handler():
+            #nonlocal samples_read
             nonlocal samples_read1
-            nonlocal xsens_reader
+            #nonlocal xsens_reader
             nonlocal ugv_reader
             # testing
-            samples_read = UGV_Subscriber.process_data(xsens_reader)
+            #samples_read = UGV_Subscriber.process_data(xsens_reader)
             samples_read1 = UGV_Subscriber.process_data(ugv_reader)
     
 
         # Obtain the DataReader's Status Condition
-        xsens_condition = dds.StatusCondition(xsens_reader)
+        #xsens_condition = dds.StatusCondition(xsens_reader)
         ugv_condition = dds.StatusCondition(ugv_reader)
 
         # Enable the "data available" status and set the handler.
-        xsens_condition.enabled_statuses = dds.StatusMask.DATA_AVAILABLE
-        xsens_condition.set_handler(condition_handler)
-
+       
+       
+        #xsens_condition.enabled_statuses = dds.StatusMask.DATA_AVAILABLE
+        #xsens_condition.set_handler(condition_handler)
+        
         ugv_condition.enabled_statuses = dds.StatusMask.DATA_AVAILABLE
         ugv_condition.set_handler(condition_handler)
 
         # Create a WaitSet and attach the StatusCondition
         waitset = dds.WaitSet()
-        waitset += xsens_condition
+        # waitset += xsens_condition
         waitset += ugv_condition
 
-        while samples_read < sample_count:
+        while samples_read1 < sample_count:
             # Catch control-C interrupt
             try:
                 # Dispatch will call the handlers associated to the WaitSet conditions
