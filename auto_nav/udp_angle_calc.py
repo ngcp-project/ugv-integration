@@ -80,14 +80,6 @@ def main():
    #lat_current = 34.058832
    #lon_current = -117.821626
     
-    #lat_goal = 34.059346
-    #lon_goal = -117.8210931
-    #lat_goal = 34.059333
-    #lon_goal = -117.8212890
-    #lat_goal = 34.059356
-    #lon_goal = -117.8213272
-    #lat_goal = 34.059341
-    #lon_goal = -117.8212127
     lat_goal =  34.059322
     lon_goal = -117.8211898
     heading_lock = 0
@@ -125,13 +117,13 @@ def main():
             actual_heading_str = heading_match.group(1)
             actual_heading = float(actual_heading_str)
             heading_error = goal_heading - actual_heading
-            heading_error = heading_error/100
+            #heading_error = heading_error/100
             heading_error = round(heading_error, 3) #Three 3 places of precisions 
             udp_payload = f"{linear_vel}, {steer_val}, {heading_error}".encode()
             server_socket.sendto(udp_payload, (drive_nucelo_ip, drive_nucelo_port))
             #self.host_sock.sendto(payload, (self.client_add, self.client_port)) 
             time.sleep(.010)
-            print(f"Goal Heading: {goal_heading}, Actual Heading: {actual_heading}, Error: {heading_error * 100}")
+            print(f"Goal Heading: {goal_heading}, Actual Heading: {actual_heading}, Error: {heading_error}")
         else:
             print("Could not find Yaw string")
 
