@@ -39,13 +39,14 @@ def main():
             actual_heading_str = heading_match.group(1)
             actual_heading = float(actual_heading_str)
             heading_error = goal_heading - actual_heading
-            heading_error = heading_error/100
+            print(heading_error)
+            #heading_error = heading_error/100
             heading_error = round(heading_error, 3) #Three 3 places of precisions 
             udp_payload = f"{linear_vel}, {steer_val}, {heading_error}".encode()
             server_socket.sendto(udp_payload, (drive_nucelo_ip, drive_nucelo_port))
             #self.host_sock.sendto(payload, (self.client_add, self.client_port)) 
             time.sleep(.010)
-            print(f"Goal Heading: {goal_heading}, Actual Heading: {actual_heading}, Error: {heading_error * 100}")
+            print(f"Goal Heading: {goal_heading}, Actual Heading: {actual_heading}, Error: {heading_error}")
         else:
             print("Could not find Yaw string")
 
