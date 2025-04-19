@@ -249,7 +249,8 @@ int main(void)
 	{
 		if (callback.packetAvailable())
 		{
-			cout << setw(5) << fixed << setprecision(2);
+			cout << setw(5) << fixed << setprecision(8);
+			ss << fixed << setprecision(8);
 
 			// Retrieve a packet
 			XsDataPacket packet = callback.getNextPacket();
