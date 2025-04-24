@@ -34,7 +34,7 @@ class XsensClass:
         # A DomainParticipant allows an application to begin communicating in
         # a DDS domain. Typically there is one DomainParticipant per application.
         # DomainParticipant QoS is configured in USER_QOS_PROFILES.xml
-        participant = dds.DomainParticipant(domain_id)
+        participant = dds.DomainParticipant(domain_id = 0)
 
         # A Topic has a name and a datatype.
         auto_topic = dds.Topic(participant, "auto_ctrl", auto_ctrl)

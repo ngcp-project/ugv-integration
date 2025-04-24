@@ -8,7 +8,6 @@
 # obligation to maintain or support the software. RTI shall not be liable for
 # any incidental or consequential damages arising out of the use or inability
 # to use the software.
-####
 import time
 import sys
 import rti.connextdds as dds
@@ -16,7 +15,6 @@ import rti.connextdds as dds
 # from ugv_data import ugv_heading_data
 from ugv import auto_ctrl
 from datetime import datetime
-
 # ugv data subscriber
 class UGV_Subscriber:
 
@@ -36,7 +34,7 @@ class UGV_Subscriber:
 
 
 
-            if isinstance(sample, auto_ctrl):
+            if (sample, auto_ctrl):
                 data_string = ( 
                         '''
                     # MTi related data
@@ -94,7 +92,7 @@ class UGV_Subscriber:
         # Associate a handler with the status condition. This will run when the
         # condition is triggered, in the context of the dispatch call (see below)
         # condition argument is not used
-        def condition_handler():
+        def condition_handler(_):
             #nonlocal samples_read
             nonlocal samples_read1
             #nonlocal xsens_reader
