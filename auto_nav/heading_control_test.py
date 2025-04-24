@@ -21,7 +21,7 @@ server_socket.bind(server_address)
 drive_nucelo_ip = '192.168.20.21'
 drive_nucelo_port = 8   
 
-linear_vel = -0.70  # Set a constant velocity for autonomy
+linear_vel = 0.20  # Set a constant velocity for autonomy
 steer_val = 0 # Does not matter what value is, Just need it send that data order in udp payload is maintained
 
 
