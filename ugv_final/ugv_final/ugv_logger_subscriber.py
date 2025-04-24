@@ -32,23 +32,25 @@ class UGV_Subscriber:
             timestamp = time.time()
             readable_time = datetime.fromtimestamp(timestamp).strftime('%D, %H:%M:%S')
 
+            
+                    # MTi related data
+            #        f"\n"
+            #       f"Timestamp: {readable_time} \n"
+            #        f"Acceleration Data: X: {sample.accel_x:.3f}, Y: {sample.accel_y:.3f} Z: {sample.accel_z:.3f} \n"
+            #        f"Gyro Data: X: {sample.gyro_x:.3f}, Y: {sample.gyro_y:.3f}, Z {sample.gyro_z:.3f} \n"
+            #        f"Orientation: Roll: {sample.roll:.3f}, Pitch: {sample.pitch:.3f} Yaw: {sample.yaw:.3f} \n"
+            #        f"GPS: Longitude: {sample.longitude}, Latitude: {sample.latitude} \n"
+            #    )
+            #elif isinstance(sample, ugv_heading_data):
+                        # add UGV data below
+            #            data_string = (
+                    
+
 
 
             if (sample, auto_ctrl):
                 data_string = ( 
-                        '''
-                    # MTi related data
-                    f"\n"
-                    f"Timestamp: {readable_time} \n"
-                    f"Acceleration Data: X: {sample.accel_x:.3f}, Y: {sample.accel_y:.3f} Z: {sample.accel_z:.3f} \n"
-                    f"Gyro Data: X: {sample.gyro_x:.3f}, Y: {sample.gyro_y:.3f}, Z {sample.gyro_z:.3f} \n"
-                    f"Orientation: Roll: {sample.roll:.3f}, Pitch: {sample.pitch:.3f} Yaw: {sample.yaw:.3f} \n"
-                    f"GPS: Longitude: {sample.longitude}, Latitude: {sample.latitude} \n"
-                )
-            elif isinstance(sample, ugv_heading_data):
-                        # add UGV data below
-                        data_string = (
-                    '''
+                    
                 #f"Goal Heading: {sample.goal_heading:.3f} \n"
                 #f"Actual Heading: {sample.actual_heading:.3f} \n"
                     f"Error Heading: {sample.heading_error:.3f} \n"
