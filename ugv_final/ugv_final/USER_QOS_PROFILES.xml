@@ -89,6 +89,7 @@ XML" chapter in the RTI Connext DDS Core Libraries User's Manual.
                     <initial_peers>
                         <element>10.110.147.99</element> <!-- IP adress of jetson orin nano -->
                         <element>10.110.192.242</element> <!-- IP adress of jetson orin nano -->
+                        <element>192.168.1.159</element> <!-- IP adress of jetson orin nano -->
                     </initial_peers>
                 </discovery>
 

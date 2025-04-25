@@ -48,10 +48,10 @@ class UgvControlSub:
             if(len(samples) != None): 
                 linear_vel = round(samples[0].linear_vel, 2)
                 steer_cmd = round(samples[0].steer_cmd, 2)
-                udp_payload = f"{linear_vel}, {steer_cmd}, {samples[0].arm_cmd[0]}, {samples[0].arm_cmd[1]}".encode()
+                udp_payload = f"{linear_vel}, {steer_cmd}".encode()
                 print(len(udp_payload.decode()))
                 server_socket.sendto(udp_payload, (client_ip, client_port))
-                print(f"{linear_vel}, {steer_cmd}, Elbow:{samples[0].arm_cmd[0]}, Shoulder: {samples[0].arm_cmd[1]})")
+                print(f"Linear vel: {linear_vel}, Steer value: {steer_cmd}")
        
         # for sample in samples:
         #     print(f"Received: {sample}")
