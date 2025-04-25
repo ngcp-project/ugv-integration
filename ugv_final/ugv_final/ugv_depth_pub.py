@@ -23,12 +23,6 @@ payload_string = ""
 obstacle_flag = 0
 auto_enable = 0
 
-""" temporary Socket Setup before RTI stuff is fleshed out """
-host_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-host_add = "localhost"
-host_port = 11111
-host_sock.bind((host_add, host_port))
-
 ## UDP setup to Tx data to nucelo 
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
@@ -56,6 +50,12 @@ class auto_ctlSubscriber:
     @staticmethod
     def run_subscriber(domain_id: int, sample_count: int):
 
+        """ temporary Socket Setup before RTI stuff is fleshed out """
+        host_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        host_add = "localhost"
+        host_port = 11111
+        host_sock.bind((host_add, host_port))
+
         # A DomainParticipant allows an application to begin communicating in
         # a DDS domain. Typically there is one DomainParticipant per application.
         # DomainParticipant QoS is configured in USER_QOS_PROFILES.xml
@@ -73,6 +73,7 @@ class auto_ctlSubscriber:
 
         # Initialize samples_read to zero
         samples_read = 0
+        AutoObj = auto_ctrl() 
 
         # Associate a handler with the status condition. This will run when the
         # condition is triggered, in the context of the dispatch call (see below)
@@ -93,7 +94,7 @@ class auto_ctlSubscriber:
         waitset = dds.WaitSet()
         waitset += status_condition
 
-        AutoObj = auto_ctrl() 
+       
 
         while samples_read < sample_count:
             # Catch control-C interrupt
@@ -114,9 +115,11 @@ class auto_ctlSubscriber:
                     
                     AutoObj.object_distance = array.array("f", payload_float_list)
                     AutoObj.obstacle_flag = obstacle_flag
+                    print(AutoObj)
                     # Dispatch will call the handlers associated to the WaitSet conditions
                     # when they activate
                     writer.write(AutoObj)
+                    print("Autonomous Enabled")
                 else: 
                     print("Depth Camera App sleeping for 1 seconds...")
 
@@ -128,9 +131,6 @@ class auto_ctlSubscriber:
 
 
 if __name__ == "__main__":
-    auto_ctlSubscriber.run_publisher(
-            domain_id=0,
-            sample_count=sys.maxsize)
     auto_ctlSubscriber.run_subscriber(
             domain_id=0,
             sample_count=sys.maxsize)
