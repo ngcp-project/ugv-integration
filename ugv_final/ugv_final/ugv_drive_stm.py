@@ -53,7 +53,7 @@ class UgvControlSub:
                 server_socket.sendto(udp_payload, (client_ip, client_port))
                 print(f"Linear vel: {linear_vel}, Steer value: {steer_cmd}")
         else:
-            print("Samples buffer is empty")
+            print("Drive buffer is empty")
         return len(samples)
 
     @staticmethod
