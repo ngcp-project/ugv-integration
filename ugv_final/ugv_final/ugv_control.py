@@ -72,8 +72,8 @@ class UgvControlPub:
                     man_obj.arm_cmd[0] += ud_dpad*2 
                     if man_obj.arm_cmd[0] < 0:
                         man_obj.arm_cmd[0] = 0
-                    elif man_obj.arm_cmd[0] > 35:
-                        man_obj.arm_cmd[0] = 35
+                    elif man_obj.arm_cmd[0] > 360:
+                        man_obj.arm_cmd[0] = 360
                     print(f"Up/Down Dpad: {ud_dpad}, L/R Dpad: {lr_dpad}")
                 else:
                     man_obj.linear_vel = cmd_vel
