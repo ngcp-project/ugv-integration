@@ -23,7 +23,7 @@ LOWER_ELBOW_SERV_LIM = -360.0
 UPPER_ELBOW_SERV_LIM = 360.0 
 DEAD_ZONE_THRESH = 15/100
 UPPER_STEER_CMD_LIMIT = 1.0 
-INC_DEC_VAL = 2
+INC_DEC_VAL = 5
 
 
 class UgvControlPub:
@@ -65,12 +65,12 @@ class UgvControlPub:
             else:
                 if lt_val > 1000 and rt_val < 1000: # If the left trigger is pressed, send payload arm commands 
                     #arm_cmd = True
-                    man_obj.arm_cmd[1] += ud_dpad*2 # Increment arm_cmd[1] by 2 
+                    man_obj.arm_cmd[1] += ud_dpad*INC_DEC_VAL # Increment arm_cmd[1]
                     if man_obj.arm_cmd[1] < LOWER_ELBOW_SERV_LIM:
                         man_obj.arm_cmd[1] = LOWER_ELBOW_SERV_LIM 
                     elif man_obj.arm_cmd[1] > UPPER_ELBOW_SERV_LIM:
                         man_obj.arm_cmd[1] = UPPER_ELBOW_SERV_LIM
-                    man_obj.arm_cmd[0] += lr_dpad*2 
+                    man_obj.arm_cmd[0] += lr_dpad*INC_DEC_VAL 
                     if man_obj.arm_cmd[0] < -360.0:
                         man_obj.arm_cmd[0] = -360.0
                     elif man_obj.arm_cmd[0] > 360.0:
@@ -78,18 +78,16 @@ class UgvControlPub:
                     print(f"Up/Down Dpad: {ud_dpad}, L/R Dpad: {lr_dpad}")
 
                     if a_btn == 1 or b_btn == 1:
-                        man_obj.arm_cmd[2] += a_btn*2 #Increment arm_cmd[2] by 2
-                        man_obj.arm_cmd[2] -= b_btn*2 #Decrement arm_cmd[2] by 2
+                        man_obj.arm_cmd[2] += a_btn*INC_DEC_VAL #Increment arm_cmd[2] 
+                        man_obj.arm_cmd[2] -= b_btn*INC_DEC_VAL #Decrement arm_cmd[2]
                     if x_btn == 1 or y_btn == 1:
-                        man_obj.arm_cmd[3] += x_btn*2 #Increment arm_cmd[3] by 3
-                        man_obj.arm_cmd[3] -= y_btn*2 #Decrement arm_cmd[3] by 3
+                        man_obj.arm_cmd[3] += x_btn*INC_DEC_VAL #Increment arm_cmd[3]
+                        man_obj.arm_cmd[3] -= y_btn*INC_DEC_VAL #Decrement arm_cmd[3]
 
                 elif rt_val > 1000 and lt_val < 1000: # If the right trigger is pressed, send payload arm commands
                     print("The right trigger is enabled")
-                    man_obj.arm_cmd[4] += a_btn*2
-                    man_obj.arm_cmd[4] -= b_btn*2
-
-
+                    man_obj.arm_cmd[4] += a_btn*INC_DEC_VAL
+                    man_obj.arm_cmd[4] -= b_btn*INC_DEC_VAL
                     
                 else:
                     man_obj.linear_vel = cmd_vel
