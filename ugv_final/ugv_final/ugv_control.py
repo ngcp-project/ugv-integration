@@ -23,6 +23,8 @@ LOWER_ELBOW_SERV_LIM = -360.0
 UPPER_ELBOW_SERV_LIM = 360.0 
 DEAD_ZONE_THRESH = 15/100
 UPPER_STEER_CMD_LIMIT = 1.0 
+INC_DEC_VAL = 2
+
 
 class UgvControlPub:
 
@@ -84,6 +86,9 @@ class UgvControlPub:
 
                 elif rt_val > 1000 and lt_val < 1000: # If the right trigger is pressed, send payload arm commands
                     print("The right trigger is enabled")
+                    man_obj.arm_cmd[4] += a_btn*2
+                    man_obj.arm_cmd[4] -= b_btn*2
+
 
                     
                 else:
