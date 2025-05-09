@@ -68,7 +68,6 @@ class UgvControlPub:
                         man_obj.arm_cmd[1] = LOWER_ELBOW_SERV_LIM 
                     elif man_obj.arm_cmd[1] > UPPER_ELBOW_SERV_LIM:
                         man_obj.arm_cmd[1] = UPPER_ELBOW_SERV_LIM
-                #elif rt_val > 1000 and lt_val < 1000: # If the right trigger is pressed, send payload arm commands
                     man_obj.arm_cmd[0] += lr_dpad*2 
                     if man_obj.arm_cmd[0] < -360.0:
                         man_obj.arm_cmd[0] = -360.0
@@ -82,6 +81,10 @@ class UgvControlPub:
                     if x_btn == 1 or y_btn == 1:
                         man_obj.arm_cmd[3] += x_btn*2 #Increment arm_cmd[3] by 3
                         man_obj.arm_cmd[3] -= y_btn*2 #Decrement arm_cmd[3] by 3
+
+                elif rt_val > 1000 and lt_val < 1000: # If the right trigger is pressed, send payload arm commands
+                    print("The right trigger is enabled")
+
                     
                 else:
                     man_obj.linear_vel = cmd_vel
