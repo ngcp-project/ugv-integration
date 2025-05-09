@@ -19,8 +19,8 @@ import signal
 
 SCALE_FACTOR = -32700
 MAX_JOY_VAL = 2**15 # max input of 32,768
-LOWER_ELBOW_SERV_LIM = -100
-UPPER_ELBOW_SERV_LIM = 10
+LOWER_ELBOW_SERV_LIM = -360.0
+UPPER_ELBOW_SERV_LIM = 360.0 
 DEAD_ZONE_THRESH = 15/100
 UPPER_STEER_CMD_LIMIT = 1.0 
 
@@ -62,18 +62,18 @@ class UgvControlPub:
                 signal.setitimer(signal.ITIMER_REAL, 0.02)
             else:
                 if lt_val > 1000 and rt_val < 1000: # If the left trigger is pressed, send payload arm commands 
-                    arm_cmd = True
+                    #arm_cmd = True
                     man_obj.arm_cmd[1] += ud_dpad*2 # Increment arm_cmd[1] by 2 
                     if man_obj.arm_cmd[1] < LOWER_ELBOW_SERV_LIM:
                         man_obj.arm_cmd[1] = LOWER_ELBOW_SERV_LIM 
                     elif man_obj.arm_cmd[1] > UPPER_ELBOW_SERV_LIM:
                         man_obj.arm_cmd[1] = UPPER_ELBOW_SERV_LIM
-                elif rt_val > 1000 and lt_val < 1000: # If the right trigger is pressed, send payload arm commands
-                    man_obj.arm_cmd[0] += ud_dpad*2 
-                    if man_obj.arm_cmd[0] < 0:
-                        man_obj.arm_cmd[0] = 0
-                    elif man_obj.arm_cmd[0] > 360:
-                        man_obj.arm_cmd[0] = 360
+                #elif rt_val > 1000 and lt_val < 1000: # If the right trigger is pressed, send payload arm commands
+                    man_obj.arm_cmd[0] += lr_dpad*2 
+                    if man_obj.arm_cmd[0] < -360.0:
+                        man_obj.arm_cmd[0] = -360.0
+                    elif man_obj.arm_cmd[0] > 360.0:
+                        man_obj.arm_cmd[0] = 360.0
                     print(f"Up/Down Dpad: {ud_dpad}, L/R Dpad: {lr_dpad}")
                 else:
                     man_obj.linear_vel = cmd_vel
@@ -92,6 +92,11 @@ class UgvControlPub:
         ud_dpad = 0
         lr_dpad = 0
         a_btn = 0
+        b_btn = 0
+        x_btn = 0
+        y_btn = 0
+
+        rotate_cmd = 0
 
         signal.signal(signal.SIGALRM, timeout_handler)  #Routes alarm to timeout handler
         signal.setitimer(signal.ITIMER_REAL, 0.02)      #timer delay in seconds, float
@@ -134,9 +139,17 @@ class UgvControlPub:
                    l_bumper = event1[0].state
                    print("Left bumper action")
 
-                # if l_bumper == 1 and r_bumper == 1:
-                #     if event1[0].code == "BTN_SOUTH"
-                        
+                if event1[0].code == "BTN_SOUTH":  # A button is pressed 
+                    a_btn = event1[0].state
+                
+                if event1[0].code == "BTN_EAST":  # B button is pressed 
+                    b_btn = event1[0].state
+
+                if event1[0].code == "BTN_NORTH":  # X button is pressed 
+                    x_btn = event1[0].state
+            
+                if event1[0].code == "BTN_WEST":  # Y button is pressed 
+                    y_btn = event1[0].state
 
             except KeyboardInterrupt:
                 break
