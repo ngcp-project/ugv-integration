@@ -75,6 +75,14 @@ class UgvControlPub:
                     elif man_obj.arm_cmd[0] > 360.0:
                         man_obj.arm_cmd[0] = 360.0
                     print(f"Up/Down Dpad: {ud_dpad}, L/R Dpad: {lr_dpad}")
+                    
+                    if a_btn == 1 or b_btn == 1:
+                        man_obj.arm_cmd[2] += a_btn*2 #Increment arm_cmd[2] by 2
+                        man_obj.arm_cmd[2] -= ud_swivel*2 #Decrement arm_cmd[2] by 2
+                    if x_btn == 1 or y_btn == 1:
+                        man_obj.arm_cmd[3] += a_btn*2 #Increment arm_cmd[3] by 3
+                        man_obj.arm_cmd[3] -= ud_swivel*2 #Decrement arm_cmd[3] by 3
+                    
                 else:
                     man_obj.linear_vel = cmd_vel
                     man_obj.steer_cmd = cmd_steer
@@ -95,6 +103,10 @@ class UgvControlPub:
         b_btn = 0
         x_btn = 0
         y_btn = 0
+        lr_swivel = 0
+        ud_swivel = 0
+        end_eff = 0
+
 
         rotate_cmd = 0
 

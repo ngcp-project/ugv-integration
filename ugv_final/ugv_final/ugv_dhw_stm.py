@@ -39,18 +39,18 @@ class UgvControlSub:
         if (len(samples) != None):
             if samples[0].auto_en == True:
                 print("Autonomous Enabled")
-                AUTO_VEL = 0.5
-                STEER_CMD = 0
-                auto_flag = float(samples[0].auto_en)  # Convert boolean flag to float so that it can be properly decoded on the nucleo side
-                udp_payload = f"{AUTO_VEL}, {STEER_CMD}, {auto_flag}".encode()
-                server_socket.sendto(udp_payload, (client_ip, client_port))
-                print(f"Const Vel: {AUTO_VEL}, Const Steer: {STEER_CMD}, Autonomous Flag: {auto_flag}")
+                # AUTO_VEL = 0.5
+                # STEER_CMD = 0
+                # auto_flag = float(samples[0].auto_en)  # Convert boolean flag to float so that it can be properly decoded on the nucleo side
+                # udp_payload = f"{AUTO_VEL}, {STEER_CMD}, {auto_flag}".encode()
+                # server_socket.sendto(udp_payload, (client_ip, client_port))
+                # print(f"Const Vel: {AUTO_VEL}, Const Steer: {STEER_CMD}, Autonomous Flag: {auto_flag}")
             else:
                 if(len(samples) != None): 
                     udp_payload = f"{samples[0].arm_cmd[0]}, {samples[0].arm_cmd[1]}".encode()
                     print(len(udp_payload.decode()))
                     server_socket.sendto(udp_payload, (client_ip, client_port))
-                    print(f"Elbow:{samples[0].arm_cmd[0]}, Shoulder: {samples[0].arm_cmd[1]})")
+                    print(f"Elbow:{samples[0].arm_cmd[0]}, Shoulder: {samples[0].arm_cmd[1]}, {samples[0].arm_cmd[2]}, {samples[0].arm_cmd[3]}")
         else:
             print("Digital HW buffer is empty")
         # for sample in samples:
