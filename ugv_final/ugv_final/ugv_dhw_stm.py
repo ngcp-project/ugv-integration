@@ -47,10 +47,10 @@ class UgvControlSub:
                 # print(f"Const Vel: {AUTO_VEL}, Const Steer: {STEER_CMD}, Autonomous Flag: {auto_flag}")
             else:
                 if(len(samples) != None): 
-                    udp_payload = f"{samples[0].arm_cmd[0]}, {samples[0].arm_cmd[1]}".encode()
+                    udp_payload = f"{samples[0].arm_cmd[0]}, {samples[0].arm_cmd[1]}, {samples[0].arm_cmd[2]}, {samples[0].arm_cmd[3]}, {samples[0].arm_cmd[4]}".encode()
                     print(len(udp_payload.decode()))
                     server_socket.sendto(udp_payload, (client_ip, client_port))
-                    print(f"Elbow:{samples[0].arm_cmd[0]}, Shoulder: {samples[0].arm_cmd[1]}, {samples[0].arm_cmd[2]}, {samples[0].arm_cmd[3]}, {samples[0].arm_cmd[4]}")
+                    print(f"Elbow:{samples[0].arm_cmd[0]}, Forarm:{samples[0].arm_cmd[1]}, Wrist:{samples[0].arm_cmd[2]}, Rot Base:{samples[0].arm_cmd[3]}, Claw:{samples[0].arm_cmd[4]}")
         else:
             print("Digital HW buffer is empty")
         # for sample in samples:
