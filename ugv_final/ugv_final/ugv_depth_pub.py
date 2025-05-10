@@ -39,7 +39,6 @@ class auto_ctlSubscriber:
         global PUB_DEPTH_DATA
 
         samples = reader.take_data()
-        print("Made it to subscriber callback")
         for sample in samples:
             if sample.auto_en == True:
                 PUB_DEPTH_DATA = True 
@@ -109,9 +108,9 @@ class auto_ctlSubscriber:
                     
                     # If any value is below the distance threshold set obstacle_flag 
                     if any(measure <= DISTANCE_THRESH for measure in payload_float_list):
-                        obstacle_flag = 1.0
+                        obstacle_flag = True
                     else:
-                        obstacle_flag = 0.0
+                        obstacle_flag = False
                     
                     AutoObj.object_distance = array.array("f", payload_float_list)
                     AutoObj.obstacle_flag = obstacle_flag
