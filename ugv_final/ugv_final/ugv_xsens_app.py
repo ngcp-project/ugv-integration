@@ -53,6 +53,8 @@ class XsensClass:
                 data_vals = re.findall(float_regex, xsens_payload)
                 data_vals = [float(data) for data in data_vals] 
                 actual_heading = data_vals[0]
+                print(data_vals[1])
+                print(data_vals[2])
                 heading_error = (goal_heading - actual_heading)
                 heading_error = round(heading_error, 2)
                 print(heading_error)
