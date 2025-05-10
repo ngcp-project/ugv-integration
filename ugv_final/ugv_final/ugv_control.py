@@ -39,7 +39,6 @@ class UgvControlPub:
         # Create manual control topic 
         man_topic = dds.Topic(participant, "man_ctrl", man_ctrl)
 
-
         # Create autonomous control topic 
         auto_topic = dds.Topic(participant, "auto_ctrl", auto_ctrl)
 
@@ -57,6 +56,7 @@ class UgvControlPub:
             if l_bumper == 1 and r_bumper == 1: # Enable Autonomous 
                  man_obj.auto_en = not man_obj.auto_en # Toggle Autonomous Boolean
                  auto_obj.auto_en = not auto_obj.auto_en # Toggle Autonomous Boolean
+                
             if man_obj.auto_en == True:
                 print("Autonomous Mode Enabled")
                 man_writer.write(man_obj) #Publish man_obj data values 
@@ -109,12 +109,6 @@ class UgvControlPub:
         b_btn = 0
         x_btn = 0
         y_btn = 0
-        lr_swivel = 0
-        ud_swivel = 0
-        end_eff = 0
-
-
-        rotate_cmd = 0
 
         signal.signal(signal.SIGALRM, timeout_handler)  #Routes alarm to timeout handler
         signal.setitimer(signal.ITIMER_REAL, 0.02)      #timer delay in seconds, float
