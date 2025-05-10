@@ -127,6 +127,7 @@ int main(void)
         exit(EXIT_FAILURE);
     }
 
+<<<<<<< HEAD
     // memset(&dest_addr, 0, sizeof(dest_addr));
 
 	// //Bind client socket client to server application @ localhost:4040
@@ -141,12 +142,15 @@ int main(void)
     // }
 
 
+=======
+>>>>>>> a4abb57ca768d526b7311e3286aff6eb81c10955
     //Filling Server Info 
     dest_addr.sin_family = AF_INET; //IPv4
     dest_addr.sin_addr.s_addr = INADDR_ANY;
     dest_addr.sin_port = htons(SERVER_PORT);
     inet_pton(AF_INET, "127.0.0.1", &dest_addr.sin_addr);  // Set IP to localhost
 
+<<<<<<< HEAD
     //Bind the Socket with the destination address 
     // if ( bind(sockfd, (const struct sockaddr *)&dest_addr, sizeof(dest_addr)) < 0)
     // {
@@ -154,6 +158,8 @@ int main(void)
     //     exit(EXIT_FAILURE);
     // }
 
+=======
+>>>>>>> a4abb57ca768d526b7311e3286aff6eb81c10955
     socklen_t len;
 	string data_payload; //Contain the udp data sent to external application
 	std::stringstream ss; //Using stringstream to build the string
@@ -270,7 +276,12 @@ int main(void)
 	{
 		if (callback.packetAvailable())
 		{
+<<<<<<< HEAD
 			cout << setw(5) << fixed << setprecision(2);
+=======
+			cout << setw(5) << fixed << setprecision(8);
+			ss << fixed << setprecision(8);
+>>>>>>> a4abb57ca768d526b7311e3286aff6eb81c10955
 
 			// Retrieve a packet
 			XsDataPacket packet = callback.getNextPacket();
@@ -338,7 +349,12 @@ int main(void)
 		data_payload = ss.str();
 
 		cout << "Data: " << data_payload << "\n";
+<<<<<<< HEAD
 		udp_payload  = data_payload.c_str();  //Create C string so that data can be sent over udp  
+=======
+		udp_payload  = data_payload.c_str();  //Create C string so that data can be sent over udp 
+		cout << ss.str(); 
+>>>>>>> a4abb57ca768d526b7311e3286aff6eb81c10955
 
 		ss.str("");  // Reset string stream buffer so that we do not hold old data 
 		

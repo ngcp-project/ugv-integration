@@ -34,7 +34,7 @@ class XsensClass:
         # A DomainParticipant allows an application to begin communicating in
         # a DDS domain. Typically there is one DomainParticipant per application.
         # DomainParticipant QoS is configured in USER_QOS_PROFILES.xml
-        participant = dds.DomainParticipant(domain_id)
+        participant = dds.DomainParticipant(domain_id = 0)
 
         # A Topic has a name and a datatype.
         auto_topic = dds.Topic(participant, "auto_ctrl", auto_ctrl)
@@ -53,6 +53,8 @@ class XsensClass:
                 data_vals = re.findall(float_regex, xsens_payload)
                 data_vals = [float(data) for data in data_vals] 
                 actual_heading = data_vals[0]
+                print(data_vals[1])
+                print(data_vals[2])
                 heading_error = (goal_heading - actual_heading)
                 heading_error = round(heading_error, 2)
                 print(heading_error)

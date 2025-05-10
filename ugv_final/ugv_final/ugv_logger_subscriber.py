@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 
+=======
+>>>>>>> a4abb57ca768d526b7311e3286aff6eb81c10955
 # (c) Copyright, Real-Time Innovations, 2022.  All rights reserved.
 # RTI grants Licensee a license to use, modify, compile, and create derivative
 # works of the software solely for use with RTI Connext DDS. Licensee may
@@ -8,7 +11,10 @@
 # obligation to maintain or support the software. RTI shall not be liable for
 # any incidental or consequential damages arising out of the use or inability
 # to use the software.
+<<<<<<< HEAD
 ####
+=======
+>>>>>>> a4abb57ca768d526b7311e3286aff6eb81c10955
 import time
 import sys
 import rti.connextdds as dds
@@ -16,7 +22,10 @@ import rti.connextdds as dds
 # from ugv_data import ugv_heading_data
 from ugv import auto_ctrl
 from datetime import datetime
+<<<<<<< HEAD
 
+=======
+>>>>>>> a4abb57ca768d526b7311e3286aff6eb81c10955
 # ugv data subscriber
 class UGV_Subscriber:
 
@@ -34,18 +43,40 @@ class UGV_Subscriber:
             timestamp = time.time()
             readable_time = datetime.fromtimestamp(timestamp).strftime('%D, %H:%M:%S')
 
+<<<<<<< HEAD
 
 
             if isinstance (sample, auto_ctrl):
                 data_string = ( 
                         '''
                     # MTi related data
+=======
+            
+                    # MTi related data
+            #        f"\n"
+            #       f"Timestamp: {readable_time} \n"
+            #        f"Acceleration Data: X: {sample.accel_x:.3f}, Y: {sample.accel_y:.3f} Z: {sample.accel_z:.3f} \n"
+            #        f"Gyro Data: X: {sample.gyro_x:.3f}, Y: {sample.gyro_y:.3f}, Z {sample.gyro_z:.3f} \n"
+            #        f"Orientation: Roll: {sample.roll:.3f}, Pitch: {sample.pitch:.3f} Yaw: {sample.yaw:.3f} \n"
+            #        f"GPS: Longitude: {sample.longitude}, Latitude: {sample.latitude} \n"
+            #    )
+            #elif isinstance(sample, ugv_heading_data):
+                        # add UGV data below
+            #            data_string = (
+                    
+
+
+
+            if (sample, auto_ctrl):
+                data_string = ( 
+>>>>>>> a4abb57ca768d526b7311e3286aff6eb81c10955
                     f"\n"
                     f"Timestamp: {readable_time} \n"
                     f"Acceleration Data: X: {sample.accel_x:.3f}, Y: {sample.accel_y:.3f} Z: {sample.accel_z:.3f} \n"
                     f"Gyro Data: X: {sample.gyro_x:.3f}, Y: {sample.gyro_y:.3f}, Z {sample.gyro_z:.3f} \n"
                     f"Orientation: Roll: {sample.roll:.3f}, Pitch: {sample.pitch:.3f} Yaw: {sample.yaw:.3f} \n"
                     f"GPS: Longitude: {sample.longitude}, Latitude: {sample.latitude} \n"
+<<<<<<< HEAD
                 )
             elif isinstance(sample, ugv_heading_data):
                         # add UGV data below
@@ -53,6 +84,11 @@ class UGV_Subscriber:
                     '''
                 #f"Goal Heading: {sample.goal_heading:.3f} \n"
                 #f"Actual Heading: {sample.actual_heading:.3f} \n"
+=======
+         
+                    f"Goal Heading: {sample.goal_heading:.3f} \n"
+                    f"Actual Heading: {sample.actual_heading:.3f} \n"
+>>>>>>> a4abb57ca768d526b7311e3286aff6eb81c10955
                     f"Error Heading: {sample.heading_error:.3f} \n"
                 )
             
@@ -94,7 +130,11 @@ class UGV_Subscriber:
         # Associate a handler with the status condition. This will run when the
         # condition is triggered, in the context of the dispatch call (see below)
         # condition argument is not used
+<<<<<<< HEAD
         def condition_handler():
+=======
+        def condition_handler(_):
+>>>>>>> a4abb57ca768d526b7311e3286aff6eb81c10955
             #nonlocal samples_read
             nonlocal samples_read1
             #nonlocal xsens_reader
