@@ -49,8 +49,6 @@ def timeout_handler(signum, frame):
     global lt_val
     global rt_val
     global ud_dpad
-    gloallr_dpad = 0
-    a_btn = 0
 
     ## Need to lat
     # ch the autonomous mode enable to one state 
@@ -139,7 +137,7 @@ def main():
             break
 
     print("preparing to shut down...")
-
+    
 
 if __name__ == "__main__":
     main()
