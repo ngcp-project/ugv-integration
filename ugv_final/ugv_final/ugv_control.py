@@ -25,7 +25,6 @@ DEAD_ZONE_THRESH = 15/100
 UPPER_STEER_CMD_LIMIT = 1.0 
 INC_DEC_VAL = 5
 
-
 class UgvControlPub:
 
     @staticmethod
