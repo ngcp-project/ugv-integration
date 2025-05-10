@@ -23,9 +23,6 @@ payload_string = ""
 obstacle_flag = 0
 auto_enable = 0
 
-## UDP setup to Tx data to nucelo 
-server_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-
 velocity_val = 0.5
 steering_angle = 0
 heading_error = 0.1
@@ -39,7 +36,10 @@ class auto_ctlSubscriber:
         # take_data() returns copies of all the data samples in the reader
         # and removes them. To also take the SampleInfo meta-data, use take().
         # To not remove the data from the reader, use read_data() or read().
+        global PUB_DEPTH_DATA
+
         samples = reader.take_data()
+        print("Made it to subscriber callback")
         for sample in samples:
             if sample.auto_en == True:
                 PUB_DEPTH_DATA = True 
@@ -49,7 +49,7 @@ class auto_ctlSubscriber:
 
     @staticmethod
     def run_subscriber(domain_id: int, sample_count: int):
-
+        global PUB_DEPTH_DATA
         """ temporary Socket Setup before RTI stuff is fleshed out """
         host_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         host_add = "localhost"
