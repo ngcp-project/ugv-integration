@@ -1,0 +1,28 @@
+Goal Heading: 0.000 
+Actual Heading: 169.375 
+Error Heading: -1.694 
+
+Goal Heading: 0.000 
+Actual Heading: 169.345 
+Error Heading: -1.693 
+
+Goal Heading: 0.000 
+Actual Heading: 169.316 
+Error Heading: -1.693 
+
+Goal Heading: 0.000 
+Actual Heading: 169.454 
+Error Heading: -1.695 
+
+Goal Heading: 0.000 
+Actual Heading: 169.440 
+Error Heading: -1.694 
+
+Goal Heading: 0.000 
+Actual Heading: 170.121 
+Error Heading: -1.701 
+
+Goal Heading: 0.000 
+Actual Heading: 174.722 
+Error Heading: -1.747 
+

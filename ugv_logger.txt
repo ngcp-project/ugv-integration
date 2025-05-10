@@ -1,0 +1,66 @@
+Goal Heading: 15.010 
+Actual Heading: 16.010 
+Error Heading: 17.010 
+
+
+Timestamp: 04/17/25, 15:30:43 
+Acceleration Data: X: 0.000, Y: 0.000 Z: 9.800 
+Gyro Data: X: 0.000, Y: 0.000, Z 0.000 
+Orientation: Roll: 5.000, Pitch: 10.000 Yaw: 15.000 
+GPS: Longitude: -122.4194, Latitude: 37.7749 
+
+
+Timestamp: 04/17/25, 15:30:44 
+Acceleration Data: X: 0.100, Y: 0.200 Z: 9.900 
+Gyro Data: X: 0.050, Y: 0.100, Z 0.200 
+Orientation: Roll: 5.100, Pitch: 10.200 Yaw: 15.300 
+GPS: Longitude: -122.41929999999999, Latitude: 37.775000000000006 
+
+Goal Heading: 16.010 
+Actual Heading: 17.010 
+Error Heading: 18.010 
+
+
+Timestamp: 04/17/25, 15:30:45 
+Acceleration Data: X: 0.200, Y: 0.400 Z: 10.000 
+Gyro Data: X: 0.100, Y: 0.200, Z 0.400 
+Orientation: Roll: 5.200, Pitch: 10.400 Yaw: 15.600 
+GPS: Longitude: -122.41919999999999, Latitude: 37.7751 
+
+Goal Heading: 17.010 
+Actual Heading: 18.010 
+Error Heading: 19.010 
+
+
+Timestamp: 04/17/25, 15:30:46 
+Acceleration Data: X: 0.300, Y: 0.600 Z: 10.100 
+Gyro Data: X: 0.150, Y: 0.300, Z 0.600 
+Orientation: Roll: 5.300, Pitch: 10.600 Yaw: 15.900 
+GPS: Longitude: -122.4191, Latitude: 37.775200000000005 
+
+Goal Heading: 18.010 
+Actual Heading: 19.010 
+Error Heading: 20.010 
+
+
+Timestamp: 04/17/25, 15:30:47 
+Acceleration Data: X: 0.400, Y: 0.800 Z: 10.200 
+Gyro Data: X: 0.200, Y: 0.400, Z 0.800 
+Orientation: Roll: 5.400, Pitch: 10.800 Yaw: 16.200 
+GPS: Longitude: -122.419, Latitude: 37.7753 
+
+Goal Heading: 19.010 
+Actual Heading: 20.010 
+Error Heading: 21.010 
+
+
+Timestamp: 04/17/25, 15:30:48 
+Acceleration Data: X: 0.500, Y: 1.000 Z: 10.300 
+Gyro Data: X: 0.250, Y: 0.500, Z 1.000 
+Orientation: Roll: 5.500, Pitch: 11.000 Yaw: 16.500 
+GPS: Longitude: -122.4189, Latitude: 37.775400000000005 
+
+Goal Heading: 20.010 
+Actual Heading: 21.010 
+Error Heading: 22.010 
+
