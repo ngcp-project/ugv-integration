@@ -13,6 +13,7 @@ import time
 import sys
 import rti.connextdds as dds
 from ugv import man_ctrl
+from ugv import auto_ctrl
 
 import socket
 
@@ -37,7 +38,7 @@ class UgvControlSub:
         samples = reader.take_data()
         #Check if samples is an empty list (indicating that controller is disconnected)
         if(len(samples) != None): 
-            if isinstance (sample, auto_ctrl):
+            if isinstance (samples, auto_ctrl):
                 print("Subscribing to autonomous topic")
             else: 
                 if samples[0].auto_en == True:
@@ -55,8 +56,8 @@ class UgvControlSub:
                     print(len(udp_payload.decode()))
                     server_socket.sendto(udp_payload, (client_ip, client_port))
                     print(f"Linear vel: {linear_vel}, Steer value: {steer_cmd}")
-            else:
-                print("Drive buffer is empty")
+        else:
+            print("Drive buffer is empty")
         return len(samples)
 
     @staticmethod
