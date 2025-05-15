@@ -85,8 +85,6 @@ class auto_ctlSubscriber:
         waitset = dds.WaitSet()
         waitset += status_condition
 
-       
-
         while samples_read < sample_count:
             # Catch control-C interrupt
             try:
