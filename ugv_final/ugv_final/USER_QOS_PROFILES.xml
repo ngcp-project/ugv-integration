@@ -87,8 +87,8 @@ XML" chapter in the RTI Connext DDS Core Libraries User's Manual.
                 </participant_name>
                 <discovery>
                     <initial_peers>
-                        <element>10.110.150.130</element> <!-- IP adress of jetson orin nano on Edurom -->
-                        <element>10.110.170.139</element> <!-- IP adress of Chris's Macbook on Edurom -->
+                        <element>10.110.148.25</element> <!-- IP adress of jetson orin nano on Edurom -->
+                        <element>10.110.171.170</element> <!-- IP adress of Chris's Macbook on Edurom -->
                         <element>192.168.1.159</element> <!-- IP adress of jetson orin nano -->
                     </initial_peers>
                 </discovery>
