@@ -40,15 +40,17 @@ class UgvControlSub:
         if(len(samples) != None): 
             if isinstance (samples, auto_ctrl):
                 print("Subscribing to autonomous topic")
-            else: 
-                if samples[0].auto_en == True:
                     print("Autonomous Enabled")
                     AUTO_VEL = 0.5
                     STEER_CMD = 0
+                    print(sample.heading_error)
                     auto_flag = float(samples[0].auto_en)  # Convert boolean flag to float so that it can be properly decoded on the nucleo side
                     udp_payload = f"{AUTO_VEL}, {STEER_CMD}, {auto_flag}".encode()
                     server_socket.sendto(udp_payload, (client_ip, client_port))
                     print(f"Const Vel: {AUTO_VEL}, Const Steer: {STEER_CMD}, Autonomous Flag: {auto_flag}")
+            else: 
+                if samples[0].auto_en == True:
+                    print("No manual Commands")
                 else:
                     linear_vel = round(samples[0].linear_vel, 2)
                     steer_cmd = round(samples[0].steer_cmd, 2)
