@@ -59,11 +59,13 @@ class UgvControlSub:
             if samples[0].auto_en == True:
                 AUTO_VEL = -1.0
                 STEER_CMD = 0
+                heading_error = samples[0].heading_error 
                 print(f"Object distance of depth Camera {samples[0].object_distance}")
+                print(f"Heading error: {samples[0].heading_error}")
                 auto_flag = float(samples[0].auto_en)  # Convert boolean flag to float so that it can be properly decoded on the nucleo side
                 udp_payload = f"{AUTO_VEL}, {STEER_CMD}, {auto_flag}, {samples[0].heading_error}".encode()
                 server_socket.sendto(udp_payload, (client_ip, client_port))
-                print(f"Const Vel: {AUTO_VEL}, Const Steer: {STEER_CMD}, Autonomous Flag: {auto_flag}: heading error: {samples[0].heading_error}")
+                print(f"Const Vel: {AUTO_VEL}, Const Steer: {STEER_CMD}, Autonomous Flag: {auto_flag}: heading error: {heading_error}")
             print("Getting Data from Autonomous Topic")
         
         else: 
