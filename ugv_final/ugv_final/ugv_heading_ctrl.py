@@ -101,6 +101,7 @@ class loggerSubscriber:
                         heading_error = round(heading_error, 3) #Three 3 places of precisions
                         print(heading_error)
                         xsens_obj.heading_error = heading_error
+                        writer.write(xsens_obj)
                 # Dispatch will call the handlers associated to the WaitSet conditions
                 # when they activate
                 else:
