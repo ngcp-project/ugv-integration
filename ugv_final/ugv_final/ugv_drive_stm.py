@@ -55,6 +55,15 @@ class UgvControlSub:
     def auto_process_data(reader):
         samples = reader.take_data()
         if(len(samples) != None): 
+            print("Autonomous Enabled")
+            if samples[0].auto_en == True:
+                AUTO_VEL = 0.5
+                STEER_CMD = 0
+                print(samples[0].heading_error)
+                auto_flag = float(samples[0].auto_en)  # Convert boolean flag to float so that it can be properly decoded on the nucleo side
+                udp_payload = f"{AUTO_VEL}, {STEER_CMD}, {auto_flag}".encode()
+                server_socket.sendto(udp_payload, (client_ip, client_port))
+                print(f"Const Vel: {AUTO_VEL}, Const Steer: {STEER_CMD}, Autonomous Flag: {auto_flag}: heading error: {samples[0].heading_error}")
             print("Getting Data from Autonomous Topic")
         
         else: 
