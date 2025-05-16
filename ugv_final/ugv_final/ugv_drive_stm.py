@@ -38,29 +38,15 @@ class UgvControlSub:
         samples = reader.take_data()
         #Check if samples is an empty list (indicating that controller is disconnected)
         if(len(samples) != None): 
-            if isinstance (samples, auto_ctrl):
-                print("Subscribing to autonomous topic")
-                # if samples[0].auto_en == True:
-                #     print("Autonomous Enabled")
-                #     AUTO_VEL = 0.5
-                #     STEER_CMD = 0
-                #     #print(sample.heading_error)
-                #     auto_flag = float(samples[0].auto_en)  # Convert boolean flag to float so that it can be properly decoded on the nucleo side
-                #     udp_payload = f"{AUTO_VEL}, {STEER_CMD}, {auto_flag}".encode()
-                #     server_socket.sendto(udp_payload, (client_ip, client_port))
-                #     print(f"Const Vel: {AUTO_VEL}, Const Steer: {STEER_CMD}, Autonomous Flag: {auto_flag}: heading error: {samples[0].heading_error}")
-                # else: 
-                #     print("auto Mode not enabled")
-            else: 
-                if samples[0].auto_en == True:
-                    print("No manual Commands")
-                else:
-                    linear_vel = round(samples[0].linear_vel, 2)
-                    steer_cmd = round(samples[0].steer_cmd, 2)
-                    udp_payload = f"{linear_vel}, {steer_cmd}".encode()
-                    print(len(udp_payload.decode()))
-                    server_socket.sendto(udp_payload, (client_ip, client_port))
-                    print(f"Linear vel: {linear_vel}, Steer value: {steer_cmd}")
+            if samples[0].auto_en == True:
+                print("No manual Commands")
+            else:
+                linear_vel = round(samples[0].linear_vel, 2)
+                steer_cmd = round(samples[0].steer_cmd, 2)
+                udp_payload = f"{linear_vel}, {steer_cmd}".encode()
+                print(len(udp_payload.decode()))
+                server_socket.sendto(udp_payload, (client_ip, client_port))
+                print(f"Linear vel: {linear_vel}, Steer value: {steer_cmd}")
         else:
             print("Drive buffer is empty")
         return len(samples)
