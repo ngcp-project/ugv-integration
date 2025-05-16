@@ -57,7 +57,7 @@ class UgvControlSub:
         if(len(samples) != None): 
             print("Autonomous Enabled")
             if samples[0].auto_en == True:
-                AUTO_VEL = 0.5
+                AUTO_VEL = 1.0
                 STEER_CMD = 0
                 print(samples[0].heading_error)
                 auto_flag = float(samples[0].auto_en)  # Convert boolean flag to float so that it can be properly decoded on the nucleo side
