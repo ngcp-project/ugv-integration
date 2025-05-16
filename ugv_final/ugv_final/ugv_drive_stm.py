@@ -57,7 +57,7 @@ class UgvControlSub:
         if(len(samples) != None): 
             print("Autonomous Enabled")
             if samples[0].auto_en == True:
-                AUTO_VEL = 1.0
+                AUTO_VEL = -1.0
                 STEER_CMD = 0
                 print(f"Object distance of depth Camera {samples[0].object_distance}")
                 auto_flag = float(samples[0].auto_en)  # Convert boolean flag to float so that it can be properly decoded on the nucleo side
@@ -94,52 +94,4 @@ class UgvControlSub:
         samples_read = 0
         auto_samples_read = 0
 
-        # Associate a handler with the status condition. This will run when the
-        # condition is triggered, in the context of the dispatch call (see below)
-        # condition argument is not used
-        def condition_handler(_):
-            nonlocal samples_read
-            nonlocal reader
-            samples_read += UgvControlSub.process_data(reader)
-        
-        #Created additional condition handler  for autonomous need to modify for practical use 
-
-        def auto_ctrl_handler(_):
-            nonlocal auto_samples_read
-            nonlocal auto_reader
-            auto_samples_read += UgvControlSub.auto_process_data(auto_reader)
-
-        # Obtain the DataReader's Status Condition
-        status_condition = dds.StatusCondition(reader)
-
-        # Enable the "data available" status and set the handler.
-        status_condition.enabled_statuses = dds.StatusMask.DATA_AVAILABLE
-        status_condition.set_handler(condition_handler)
-
-        auto_status_condition = dds.StatusCondition(auto_reader)
-        auto_status_condition.enabled_statuses = dds.StatusMask.DATA_AVAILABLE
-        auto_status_condition.set_handler(auto_ctrl_handler) 
-
-
-        # Create a WaitSet and attach the StatusCondition
-        waitset = dds.WaitSet()
-        waitset += status_condition
-        waitset += auto_status_condition
-
-        while samples_read < sample_count or auto_samples_read < sample_count:
-            # Catch control-C interrupt
-            try:
-                # Dispatch will call the handlers associated to the WaitSet conditions
-                # when they activate
-
-                waitset.dispatch(dds.Duration(1))  # Wait up to 1s each time
-            except KeyboardInterrupt:
-                break
-
-        print("preparing to shut down...")
-
-
-if __name__ == "__main__":
-    UgvControlSub.run_subscriber(
-            domain_id=0,
-            sample_count=sys.maxsize)
+        # Associate a handler wit
