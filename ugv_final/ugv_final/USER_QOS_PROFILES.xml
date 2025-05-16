@@ -67,6 +67,9 @@ XML" chapter in the RTI Connext DDS Core Libraries User's Manual.
                 <publication_name>
                     <name>ugvDataWriter</name>
                 </publication_name>
+                    <history>
+                        <depth>32</depth>
+                    </history>
             </datawriter_qos>
 
             <!-- QoS used to configure the data reader created in the example code -->                
@@ -74,6 +77,9 @@ XML" chapter in the RTI Connext DDS Core Libraries User's Manual.
                 <subscription_name>
                     <name>ugvDataReader</name>
                 </subscription_name>
+                    <history>
+                        <depth>32</depth>
+                    </history>
             </datareader_qos>
             <domain_participant_qos>
                 <!--
