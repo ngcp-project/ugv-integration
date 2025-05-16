@@ -40,17 +40,17 @@ class UgvControlSub:
         if(len(samples) != None): 
             if isinstance (samples, auto_ctrl):
                 print("Subscribing to autonomous topic")
-                if samples[0].auto_en == True:
-                    print("Autonomous Enabled")
-                    AUTO_VEL = 0.5
-                    STEER_CMD = 0
-                    #print(sample.heading_error)
-                    auto_flag = float(samples[0].auto_en)  # Convert boolean flag to float so that it can be properly decoded on the nucleo side
-                    udp_payload = f"{AUTO_VEL}, {STEER_CMD}, {auto_flag}".encode()
-                    server_socket.sendto(udp_payload, (client_ip, client_port))
-                    print(f"Const Vel: {AUTO_VEL}, Const Steer: {STEER_CMD}, Autonomous Flag: {auto_flag}: heading error: {samples[0].heading_error}")
-                else: 
-                    print("auto Mode not enabled")
+                # if samples[0].auto_en == True:
+                #     print("Autonomous Enabled")
+                #     AUTO_VEL = 0.5
+                #     STEER_CMD = 0
+                #     #print(sample.heading_error)
+                #     auto_flag = float(samples[0].auto_en)  # Convert boolean flag to float so that it can be properly decoded on the nucleo side
+                #     udp_payload = f"{AUTO_VEL}, {STEER_CMD}, {auto_flag}".encode()
+                #     server_socket.sendto(udp_payload, (client_ip, client_port))
+                #     print(f"Const Vel: {AUTO_VEL}, Const Steer: {STEER_CMD}, Autonomous Flag: {auto_flag}: heading error: {samples[0].heading_error}")
+                # else: 
+                #     print("auto Mode not enabled")
             else: 
                 if samples[0].auto_en == True:
                     print("No manual Commands")
@@ -64,6 +64,18 @@ class UgvControlSub:
         else:
             print("Drive buffer is empty")
         return len(samples)
+    
+    @staticmethod
+    def auto_process_data(reader):
+        samples = reader.take_data()
+        if(len(samples) != None): 
+            print("Getting Data from Autonomous Topic")
+        
+        else: 
+            ("Autonomous Buffer is empty")
+        
+        return len(samples)
+
 
     @staticmethod
     def run_subscriber(domain_id: int, sample_count: int):
@@ -97,10 +109,10 @@ class UgvControlSub:
         
         #Created additional condition handler  for autonomous need to modify for practical use 
 
-        def condition_handler(_):
-            nonlocal auto_samples_read = 0
+        def auto_ctrl_handler(_):
+            nonlocal auto_samples_read
             nonlocal auto_reader
-            auto_samples_read += 
+            auto_samples_read += UgvControlSub.auto_process_data(auto_reader)
 
         # Obtain the DataReader's Status Condition
         status_condition = dds.StatusCondition(reader)
@@ -109,11 +121,17 @@ class UgvControlSub:
         status_condition.enabled_statuses = dds.StatusMask.DATA_AVAILABLE
         status_condition.set_handler(condition_handler)
 
+        auto_status_condition = dds.StatusCondition(auto_reader)
+        auto_status_condition.enabled_statuses = dds.StatusMask.DATA_AVAILABLE
+        auto_status_condition.set_handler(auto_ctrl_handler) 
+
+
         # Create a WaitSet and attach the StatusCondition
         waitset = dds.WaitSet()
         waitset += status_condition
+        waitset += auto_status_condition
 
-        while samples_read < sample_count:
+        while samples_read < sample_count or auto_samples_read < sample_count:
             # Catch control-C interrupt
             try:
                 # Dispatch will call the handlers associated to the WaitSet conditions
