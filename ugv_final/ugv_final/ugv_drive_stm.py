@@ -115,7 +115,7 @@ class UgvControlSub:
         # Create a WaitSet and attach the StatusCondition
         waitset = dds.WaitSet()
         waitset += status_condition
-        # waitset += auto_status_condition
+        waitset += auto_status_condition
 
         while samples_read < sample_count or auto_samples_read < sample_count:
             # Catch control-C interrupt
