@@ -59,7 +59,7 @@ class UgvControlSub:
             if samples[0].auto_en == True:
                 AUTO_VEL = 1.0
                 STEER_CMD = 0
-                print(samples[0].heading_error)
+                print(f"Object distance of depth Camera {samples[0].object_distance}")
                 auto_flag = float(samples[0].auto_en)  # Convert boolean flag to float so that it can be properly decoded on the nucleo side
                 udp_payload = f"{AUTO_VEL}, {STEER_CMD}, {auto_flag}".encode()
                 server_socket.sendto(udp_payload, (client_ip, client_port))
