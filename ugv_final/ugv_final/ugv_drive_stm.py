@@ -40,6 +40,7 @@ class UgvControlSub:
         if(len(samples) != None): 
             if isinstance (samples, auto_ctrl):
                 print("Subscribing to autonomous topic")
+                if samples[0].auto_en == True:
                     print("Autonomous Enabled")
                     AUTO_VEL = 0.5
                     STEER_CMD = 0
@@ -47,7 +48,9 @@ class UgvControlSub:
                     auto_flag = float(samples[0].auto_en)  # Convert boolean flag to float so that it can be properly decoded on the nucleo side
                     udp_payload = f"{AUTO_VEL}, {STEER_CMD}, {auto_flag}".encode()
                     server_socket.sendto(udp_payload, (client_ip, client_port))
-                    print(f"Const Vel: {AUTO_VEL}, Const Steer: {STEER_CMD}, Autonomous Flag: {auto_flag}: heading error: {sample.heading_error}")
+                    print(f"Const Vel: {AUTO_VEL}, Const Steer: {STEER_CMD}, Autonomous Flag: {auto_flag}: heading error: {samples[0].heading_error}")
+                else: 
+                    print("auto Mode not enabled")
             else: 
                 if samples[0].auto_en == True:
                     print("No manual Commands")
@@ -78,9 +81,11 @@ class UgvControlSub:
         # This DataReader reads data on Topic "Example logger".
         # DataReader QoS is configured in USER_QOS_PROFILES.xml
         reader = dds.DataReader(participant.implicit_subscriber, man_topic)
-
+        
+        auto_reader =  dds.DataReader(participant.implicit_subscriber, auto_topic)
         # Initialize samples_read to zero
         samples_read = 0
+        auto_samples_read = 0
 
         # Associate a handler with the status condition. This will run when the
         # condition is triggered, in the context of the dispatch call (see below)
@@ -89,6 +94,13 @@ class UgvControlSub:
             nonlocal samples_read
             nonlocal reader
             samples_read += UgvControlSub.process_data(reader)
+        
+        #Created additional condition handler  for autonomous need to modify for practical use 
+
+        def condition_handler(_):
+            nonlocal auto_samples_read = 0
+            nonlocal auto_reader
+            auto_samples_read += 
 
         # Obtain the DataReader's Status Condition
         status_condition = dds.StatusCondition(reader)
