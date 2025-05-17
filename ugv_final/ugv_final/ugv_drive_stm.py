@@ -52,8 +52,8 @@ class UgvControlSub:
         return len(samples)
     
     @staticmethod
-    def auto_process_data(reader):
-        samples = reader.take_data()
+    def auto_process_data(auto_reader):
+        samples = auto_reader.take_data()
         if(len(samples) != None): 
             for sample in samples:
                 print(f"Received: {sample}")
