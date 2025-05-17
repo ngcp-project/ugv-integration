@@ -102,6 +102,7 @@ class loggerSubscriber:
                         print(heading_error)
                         xsens_obj.heading_error = float(heading_error)
                         writer.write(xsens_obj)
+                        time.sleep(0.10)
                 # Dispatch will call the handlers associated to the WaitSet conditions
                 # when they activate
                 else:
