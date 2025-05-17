@@ -105,6 +105,8 @@ class loggerSubscriber:
                         time.sleep(0.10)
                 # Dispatch will call the handlers associated to the WaitSet conditions
                 # when they activate
+                    waitset.dispatch(dds.Duration(1))  # Wait up to 1s each time
+                    print("Waiting for New manual Data")
                 else:
                     print("(Xsens Pub): Autonomous Mode Not enabled")
 
