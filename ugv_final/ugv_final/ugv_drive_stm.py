@@ -55,6 +55,8 @@ class UgvControlSub:
     def auto_process_data(reader):
         samples = reader.take_data()
         if(len(samples) != None): 
+            for sample in samples:
+                print(f"Received: {sample}")
             print("Autonomous Enabled")
             if samples[0].auto_en == True:
                 AUTO_VEL = -1.0
