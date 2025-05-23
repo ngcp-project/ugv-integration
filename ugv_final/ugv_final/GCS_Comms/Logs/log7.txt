@@ -1,0 +1,8 @@
+2025-05-15 20:00:53,470: Log 7
+
+2025-05-15 20:00:53,470: port: /dev/ttyUSB1, baudrate: 115200, timeout: 0.1, config_file: None
+2025-05-15 20:00:53,470: Attempting to open serial XBee connection.
+2025-05-15 20:00:53,480: Serial port opened.
+2025-05-15 20:00:53,480: Clearing input and output buffers.
+2025-05-15 20:01:02,125: Attempting to close serial XBee connection.
+2025-05-15 20:01:02,129: Serial port closed.

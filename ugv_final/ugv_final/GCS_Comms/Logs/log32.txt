@@ -1,0 +1,56 @@
+2025-05-16 16:00:14,033: Log 32
+
+2025-05-16 16:00:14,033: port: /dev/ttyUSB0, baudrate: 115200, timeout: 0.1, config_file: None
+2025-05-16 16:00:14,033: Attempting to open serial XBee connection.
+2025-05-16 16:00:14,043: Serial port opened.
+2025-05-16 16:00:14,043: Clearing input and output buffers.
+2025-05-16 16:00:19,724: Receiving data:
+2025-05-16 16:00:19,725: Decoded frame data: 81 00 05 11 00 01 35 7b 27 65 76 5f 74 79 70 65 27 3a 20 27 53 79 6e 63 27 2c 20 27 63 6f 64 65 27 3a 20 27 53 59 4e 5f 52 45 50 4f 52 54 27 2c 20 27 73 74 61 74 65 27 3a 20 30 7d
+2025-05-16 16:00:19,725: Received Checksum: 54
+2025-05-16 16:00:19,725: Calculated Checksum: 54
+2025-05-16 16:00:19,725: Adding frame to 0x81 (Rx Packet) queue
+2025-05-16 16:00:19,725: Received payload. RSSI: -17, Decoded message: 5{'ev_type': 'Sync', 'code': 'SYN_REPORT', 'state': 0}
+2025-05-16 16:00:19,725: [Frame Receive: 16-bit Address] Frame Type: 129, Source Address: b'\x00\x05', RSSI: -17, Options: 0, Data: b"\x81\x00\x05\x11\x00\x015{'ev_type': 'Sync', 'code': 'SYN_REPORT', 'state': 0}"
+2025-05-16 16:00:19,726: Transmitting data: 5 to 0013A20042435A3D
+2025-05-16 16:00:19,726: Encoded data: 7e 00 0d 00 01 00 13 a2 00 42 43 5a 3d 00 03 35 f5 
+2025-05-16 16:00:19,788: Receiving data:
+2025-05-16 16:00:19,789: Decoded frame data: 89 01 00
+2025-05-16 16:00:19,789: Received Checksum: 75
+2025-05-16 16:00:19,789: Calculated Checksum: 75
+2025-05-16 16:00:19,789: Adding frame to 0x89 (Tx Status) queue
+2025-05-16 16:00:19,794: [Transmit status] Frame Type: 137, Frame ID: 1, Status: 0
+2025-05-16 16:00:20,204: Receiving data:
+2025-05-16 16:00:20,221: Decoded frame data: 81 00 05 13 00 01 35 7b 27 65 76 5f 74 79 70 65 27 3a 20 27 53 79 6e 63 27 2c 20 27 63 6f 64 65 27 3a 20 27 53 59 4e 5f 52 45 50 4f 52 54 27 2c 20 27 73 74 61 74 65 27 3a 20 30 7d
+2025-05-16 16:00:20,221: Received Checksum: 52
+2025-05-16 16:00:20,222: Calculated Checksum: 52
+2025-05-16 16:00:20,222: Adding frame to 0x81 (Rx Packet) queue
+2025-05-16 16:00:20,222: Received payload. RSSI: -19, Decoded message: 5{'ev_type': 'Sync', 'code': 'SYN_REPORT', 'state': 0}
+2025-05-16 16:00:20,223: [Frame Receive: 16-bit Address] Frame Type: 129, Source Address: b'\x00\x05', RSSI: -19, Options: 0, Data: b"\x81\x00\x05\x13\x00\x015{'ev_type': 'Sync', 'code': 'SYN_REPORT', 'state': 0}"
+2025-05-16 16:00:20,723: Receiving data:
+2025-05-16 16:00:20,723: Decoded frame data: 81 00 05 13 00 01 35 7b 27 65 76 5f 74 79 70 65 27 3a 20 27 53 79 6e 63 27 2c 20 27 63 6f 64 65 27 3a 20 27 53 59 4e 5f 52 45 50 4f 52 54 27 2c 20 27 73 74 61 74 65 27 3a 20 30 7d
+2025-05-16 16:00:20,723: Received Checksum: 52
+2025-05-16 16:00:20,723: Calculated Checksum: 52
+2025-05-16 16:00:20,723: Adding frame to 0x81 (Rx Packet) queue
+2025-05-16 16:00:20,723: Received payload. RSSI: -19, Decoded message: 5{'ev_type': 'Sync', 'code': 'SYN_REPORT', 'state': 0}
+2025-05-16 16:00:20,723: [Frame Receive: 16-bit Address] Frame Type: 129, Source Address: b'\x00\x05', RSSI: -19, Options: 0, Data: b"\x81\x00\x05\x13\x00\x015{'ev_type': 'Sync', 'code': 'SYN_REPORT', 'state': 0}"
+2025-05-16 16:00:21,203: Receiving data:
+2025-05-16 16:00:21,219: Decoded frame data: 81 00 05 13 00 01 35 7b 27 65 76 5f 74 79 70 65 27 3a 20 27 53 79 6e 63 27 2c 20 27 63 6f 64 65 27 3a 20 27 53 59 4e 5f 52 45 50 4f 52 54 27 2c 20 27 73 74 61 74 65 27 3a 20 30 7d
+2025-05-16 16:00:21,219: Received Checksum: 52
+2025-05-16 16:00:21,219: Calculated Checksum: 52
+2025-05-16 16:00:21,219: Adding frame to 0x81 (Rx Packet) queue
+2025-05-16 16:00:21,219: Received payload. RSSI: -19, Decoded message: 5{'ev_type': 'Sync', 'code': 'SYN_REPORT', 'state': 0}
+2025-05-16 16:00:21,219: [Frame Receive: 16-bit Address] Frame Type: 129, Source Address: b'\x00\x05', RSSI: -19, Options: 0, Data: b"\x81\x00\x05\x13\x00\x015{'ev_type': 'Sync', 'code': 'SYN_REPORT', 'state': 0}"
+2025-05-16 16:00:21,723: Receiving data:
+2025-05-16 16:00:21,723: Decoded frame data: 81 00 05 0b 00 01 35 7b 27 65 76 5f 74 79 70 65 27 3a 20 27 53 79 6e 63 27 2c 20 27 63 6f 64 65 27 3a 20 27 53 59 4e 5f 52 45 50 4f 52 54 27 2c 20 27 73 74 61 74 65 27 3a 20 30 7d
+2025-05-16 16:00:21,723: Received Checksum: 5a
+2025-05-16 16:00:21,723: Calculated Checksum: 5a
+2025-05-16 16:00:21,723: Adding frame to 0x81 (Rx Packet) queue
+2025-05-16 16:00:21,723: Received payload. RSSI: -11, Decoded message: 5{'ev_type': 'Sync', 'code': 'SYN_REPORT', 'state': 0}
+2025-05-16 16:00:21,723: [Frame Receive: 16-bit Address] Frame Type: 129, Source Address: b'\x00\x05', RSSI: -11, Options: 0, Data: b"\x81\x00\x05\x0b\x00\x015{'ev_type': 'Sync', 'code': 'SYN_REPORT', 'state': 0}"
+2025-05-16 16:00:22,203: Receiving data:
+2025-05-16 16:00:22,219: Decoded frame data: 81 00 05 11 00 01 35 7b 27 65 76 5f 74 79 70 65 27 3a 20 27 53 79 6e 63 27 2c 20 27 63 6f 64 65 27 3a 20 27 53 59 4e 5f 52 45 50 4f 52 54 27 2c 20 27 73 74 61 74 65 27 3a 20 30 7d
+2025-05-16 16:00:22,219: Received Checksum: 54
+2025-05-16 16:00:22,219: Calculated Checksum: 54
+2025-05-16 16:00:22,219: Adding frame to 0x81 (Rx Packet) queue
+2025-05-16 16:00:22,219: Received payload. RSSI: -17, Decoded message: 5{'ev_type': 'Sync', 'code': 'SYN_REPORT', 'state': 0}
+2025-05-16 16:00:22,219: [Frame Receive: 16-bit Address] Frame Type: 129, Source Address: b'\x00\x05', RSSI: -17, Options: 0, Data: b"\x81\x00\x05\x11\x00\x015{'ev_type': 'Sync', 'code': 'SYN_REPORT', 'state': 0}"
