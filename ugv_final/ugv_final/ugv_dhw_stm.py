@@ -13,7 +13,7 @@ import time
 import sys
 import rti.connextdds as dds
 from ugv import man_ctrl
-
+from ugv import auto_ctrl
 
 import socket
 
