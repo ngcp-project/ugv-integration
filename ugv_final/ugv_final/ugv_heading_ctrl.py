@@ -98,16 +98,16 @@ class loggerSubscriber:
                     if heading_match:
                         actual_heading_str = heading_match.group(1)
                         actual_heading = float(actual_heading_str)
-                        heading_error = GOAL_HEADING - actual_heading
-                        print(heading_error)
-                        #heading_error = heading_error/100
+                        #heading_error = GOAL_HEADING - actual_heading
+                        heading_error = actual_heading 
+                        heading_error *= -1
                         heading_error = round(heading_error, 3) #Three 3 places of precisions
                         print(heading_error)
                         heading_error_payload = f"{heading_error}".encode()
                         heading_error_client.sendto(heading_error_payload, heading_error_server)
                         xsens_obj.heading_error = float(heading_error)
                         writer.write(xsens_obj)
-                        time.sleep(0.10)
+                        #time.sleep(0.1)
                 # Dispatch will call the handlers associated to the WaitSet conditions
                 # when they activate
                     waitset.dispatch(dds.Duration(1))  # Wait up to 1s each time
