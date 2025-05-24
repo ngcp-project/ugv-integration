@@ -11,7 +11,7 @@
                     <name>ugvDataWriter</name>
                 </publication_name>
                 <history>
-                    <kind>KEEP_LAST</kind>
+                    <kind>KEEP_LAST_HISTORY_QOS</kind>
                     <depth>32</depth>
                 </history>
                 <resource_limits>
@@ -20,7 +20,7 @@
                     <max_samples_per_instance>64</max_samples_per_instance>
                 </resource_limits>
                 <durability>
-                    <kind>TRANSIENT_LOCAL</kind>
+                    <kind>TRANSIENT_LOCAL_DURABILITY_QOS</kind>
                 </durability>
             </datawriter_qos>
 
@@ -29,7 +29,7 @@
                     <name>ugvDataReader</name>
                 </subscription_name>
                 <history>
-                    <kind>KEEP_LAST</kind>
+                    <kind>KEEP_LAST_HISTORY_QOS</kind>
                     <depth>32</depth>
                 </history>
                 <resource_limits>
@@ -38,7 +38,7 @@
                     <max_samples_per_instance>64</max_samples_per_instance>
                 </resource_limits>
                 <durability>
-                    <kind>TRANSIENT_LOCAL</kind>
+                    <kind>TRANSIENT_LOCAL_DURABILITY_QOS</kind>
                 </durability>
             </datareader_qos>
 
@@ -49,10 +49,10 @@
                 </participant_name>
                 <discovery>
                     <initial_peers>
-                        <element>10.110.148.25</element> <!-- Jetson Orin Nano on Eduroam -->
-                        <element>10.110.171.170</element> <!-- Chris's MacBook on Eduroam -->
-                        <element>192.168.1.165</element> <!-- Jetson Orin Nano on local -->
-                        <element>192.168.1.157</element> <!-- Chris's MacBook on local -->
+                        <element>10.110.148.25</element> <!-- Jetson Orin Nano (Eduroam) -->
+                        <element>10.110.171.170</element> <!-- Chris's MacBook (Eduroam) -->
+                        <element>192.168.1.165</element> <!-- Jetson Orin Nano (Local) -->
+                        <element>192.168.1.157</element> <!-- Chris's Mac (Local) -->
                     </initial_peers>
                 </discovery>
             </domain_participant_qos>
