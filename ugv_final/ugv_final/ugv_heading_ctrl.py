@@ -20,6 +20,9 @@ import socket
 
 PUB_XSENS_DATA = False
 
+heading_error_client = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+heading_error_server = ('localhost', 33333)
+
 class loggerSubscriber:
 
     @staticmethod
@@ -100,6 +103,8 @@ class loggerSubscriber:
                         #heading_error = heading_error/100
                         heading_error = round(heading_error, 3) #Three 3 places of precisions
                         print(heading_error)
+                        heading_error_payload = f"{heading_error}".encode()
+                        heading_error_client.sendto(heading_error_payload, heading_error_server)
                         xsens_obj.heading_error = float(heading_error)
                         writer.write(xsens_obj)
                         time.sleep(0.10)
